@@ -1,0 +1,73 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Page index html twig {% endblock %}
+
+
+{% block body %}
+    <style>
+        h1 {
+            color: white;
+            background-color: black;
+            padding: 20px;
+            text-align: center;
+        }
+        .boite {
+            width: 300px;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: 1px solid black;
+            text-align: center;
+        }
+        p {
+            color: green;
+        }
+        span {
+            font-weight: bold;
+            font-size: 16px;
+            color: black;
+        }
+        .monlien {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+        }
+        ul {
+            list-style-type: none;
+        }
+        a {
+            display: inline-block;
+            padding: 10px;
+            text-decoration: none;
+            background-color: green;
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
+    <h1> nom du controller {{ controller_name }}</h1>
+    <div class="boite"> 
+        {% for livre in livres %}
+
+            <p><span> Titre du livre </span>  {{ livre.titre }}</p>
+            <p><span> Date de creation</span>   {{ livre.date|date('d/m/Y') }} </p>
+                        
+            <form method="post" action="{{ path('app_livre_delete', {id: livre.id}) }}" onsubmit="return confirm('Es-tu sûr de vouloir supprimer ce livre ?');">
+                {# Champ caché contenant le jeton CSRF #}
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">
+    
+                <button type="submit" class="btn-delete">Supprimer</button>
+            </form>
+        {% endfor %}
+    </div>
+
+    <ul class="monlien"> 
+        <li> <a href=" {{ path('app_livre_create') }}"> Ajouter un livre </a></li> 
+    </ul>
+{% endblock %} 
+
+{% block javascripts %}
+    <script>
+        console.log("hello ici javascript ");
+    </script>
+{% endblock %}    
+
