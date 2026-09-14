@@ -13,9 +13,6 @@ final class HomeController extends AbstractController
     {
 
             return $this->json(["cles_env" => $maClef]);
-        // return $this->render('home/index.html.twig', [
-        //     'controller_name' => 'HomeController',
-        // ]);
     }
 
     #[Route('/code', name: 'app_code')]
@@ -24,9 +21,7 @@ final class HomeController extends AbstractController
 
     $maClef = $this->getParameter("app.ma_super_cle");
             return $this->json(["cles_env" => $maClef]);
-        // return $this->render('home/index.html.twig', [
-        //     'controller_name' => 'HomeController',
-        // ]);
+      
     }
 
 

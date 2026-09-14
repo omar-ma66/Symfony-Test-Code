@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LivreRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
@@ -18,6 +19,9 @@ class Livre
 
     #[ORM\Column]
     private ?\DateTimeImmutable $date = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    private ?string $prix = null;
 
     public function getId(): ?int
     {
@@ -44,6 +48,18 @@ class Livre
     public function setDate(\DateTimeImmutable $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getPrix(): ?string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(string $prix): static
+    {
+        $this->prix = $prix;
 
         return $this;
     }

@@ -62,6 +62,8 @@ a {
 }
 </style>
 
+
+
 {% if livres|length > 0 %}
     <p style="text-align: center; font-weight: bold;">
         Nombre de livre(s) : {{ livres|length }}
@@ -73,6 +75,7 @@ a {
                 <th>Titre</th>
                 <th>Date</th>
                 <th>Action</th>
+                <th>Edite</th>
               
             </tr>
         </thead>
@@ -86,6 +89,9 @@ a {
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">
                             <button class="btn-delete" type="submit">Supprimer</button>
                         </form>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_livre_update',{id: livre.id}) }}">Edite</a>
                     </td>
                     
                 </tr>
@@ -101,4 +107,6 @@ a {
         <a href="{{ path('app_livre_create') }}">Ajouter un livre</a>
     </li>
 </ul>
+
+
 {% endblock %}

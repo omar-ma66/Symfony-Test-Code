@@ -13,23 +13,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
 
 // ####################################################################
+#[Route('/livre')]
 final class LivreController extends AbstractController
 {
-    #[Route('/livre', name: 'app_livre')]
+    #[Route('/', name: 'app_livre',methods:['GET'])]
     public function index(LivreRepository $livre): Response
     {
       $all =    $livre->findAll();
         return $this->render('livre/index2.html.twig', [
-            'controller_name' => 'LivreController',"livres"=>$all
+            "livres"=>$all
         ]);
     }
 // ####################################################################
 
-    #[Route('/livre/new',name: 'app_livre_create')]
+    #[Route('/new',name: 'app_livre_create',methods:['GET','POST'])]
     public function create(Request $request,EntityManagerInterface $em ): Response
     {
             $livre = new Livre();
-
             $form = $this->createForm(LivreType::class,$livre) ;
 
             $form->handleRequest($request) ;
@@ -38,7 +38,7 @@ final class LivreController extends AbstractController
                     $em->persist($livre);
                     $em->flush();
 
-                    return $this->redirectToRoute("app_livre_create");
+                    return $this->redirectToRoute("app_livre");
                 }
 
    return   $this->render("livre/create.html.twig",
@@ -50,11 +50,11 @@ final class LivreController extends AbstractController
 // ####################################################################
 
 
-#[Route('/livre/supprime/{id}',name:'app_livre_delete',methods:['POST'])]
+#[Route('/supprime/{id}',name:'app_livre_delete',methods:['POST'] ,requirements :['id' =>Requirement::DIGITS])]
 public function delete(Request $request ,EntityManagerInterface $em,Livre $livre):Response
 {
   
-if($this->isCsrfTokenValid('delete' . $livre->getId() ,$request->request->get('_token')))
+if($this->isCsrfTokenValid('delete' . $livre->getId() ,(string) $request->request->get('_token')))
     {
         $em->remove($livre);
         
@@ -64,21 +64,22 @@ if($this->isCsrfTokenValid('delete' . $livre->getId() ,$request->request->get('_
 } 
 
 // ####################################################################
-#[Route('/livre/update/{id}',name: 'app_livre_update',methods:['GET','POST'],requirements:['id' => Requirement::DIGITS])]
+#[Route('/update/{id}',name: 'app_livre_update',methods:['GET','POST'],requirements:['id' => Requirement::DIGITS])]
 public function update(Request $request,Livre $livre ,EntityManagerInterface $em):Response
 {
+
+$tableau = ["un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix"];
+
+
   $form = $this->createForm(LivreType::class , $livre);
   $form->handleRequest($request);
-  if($form->isSubmitted() && $form->isValid())
+if($form->isSubmitted() && $form->isValid())
     {
         $em->flush();
-      return  $this->redirectToRoute('app_livre');
+      return  $this->redirectToRoute('app_livre',[],Response::HTTP_SEE_OTHER);
     }
- return $this->render('livre/index2.html.twig',["form"=>$form,"livre"=>$livre]);         
+  return $this->render('livre/update.html.twig',["form"=>$form,"livre"=>$livre,"tableau"=>$tableau]);         
 }
-
-
-
 // ####################################################################
 }
 // ####################################################################
