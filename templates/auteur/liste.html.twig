@@ -21,13 +21,14 @@
 
 <table> 
     <tr> 
-        <th>nom</th><th>prenom</th><th>supprimer</th>
+        <th>nom</th><th>prenom</th><th>supprimer</th><th>edite</th>
     </tr>
                             {% for auteur in auteurs %}
 <tr>
         <td>{{ auteur.nom }}</td>
         <td>{{ auteur.prenom }}</td>
         <td>{{ include('auteur/_delete.html.twig',{auteurID: auteur.id}) }}</td>
+        <td><a href="{{ path('app_auteur_update',{id: auteur.id}) }} "> Edite </a></td>
 </tr>
 
                                 

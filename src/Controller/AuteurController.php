@@ -69,5 +69,10 @@ $all = $ar->findAll();
 
    }
 // ##########################################################################################
+        #[Route('/auteur/edite/{id}',name:'app_auteur_update',methods:['GET','POST'])]
+        public function update():Response
+        {
 
+            return $this->render('auteur/update.html.twig');
+        }
 }
