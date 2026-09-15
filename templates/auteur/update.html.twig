@@ -3,14 +3,34 @@
 
 
 {% block body %}
-<style></style>
+<style>
+.boite{
+    display:flex;
+}
+.container{
+    display:flex;
+    gap:10px;
+}
+
+</style>
 
 
                            {{  form_start(form)  }}
 
-                                    {{ form_widget(form) }}
+<div class="container"> 
+                        <div class="boite">
+                                {{ form_label(form.nom,"Nom de l'auteur",{'label_attr':{'class':' '}} ) }}
+                                {{ form_widget(form.nom,{'attr':{'style':'width:200px; '}}) }}
+                                {{ form_errors(form.nom) }}
+                        </div>
+                        <div class="boite">
+                                {{ form_label(form.prenom ,"Prenom de l'auteur",{"label_attr":{"class":" "}}) }}
+                                {{ form_widget(form.prenom ,{'attr':{'style':'width:200px; '}}) }}
+                                {{ form_errors(form.prenom) }}
+                        </div>
 
                             <button type="submit">Modiffier</button>
+   </div>                         
                            {{ form_end(form) }}
 
 
