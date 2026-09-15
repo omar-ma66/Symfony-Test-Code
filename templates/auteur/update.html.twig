@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block  title %}Edit Auteur {% endblock %}
+
+
+{% block body %}
+<style></style>
+
+
+                           {{  form_start(form)  }}
+
+                                    {{ form_widget(form) }}
+
+                            <button type="submit">Modiffier</button>
+                           {{ form_end(form) }}
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script>
+        console.log('Edit Auteur');
+    </script>
+{% endblock %}

@@ -70,9 +70,19 @@ $all = $ar->findAll();
    }
 // ##########################################################################################
         #[Route('/auteur/edite/{id}',name:'app_auteur_update',methods:['GET','POST'])]
-        public function update():Response
+        public function update(Auteur $auteur ,EntityManagerInterface $em ,Request $request):Response
         {
 
-            return $this->render('auteur/update.html.twig');
+                $form = $this->createForm(AuteurType::class,$auteur);
+                $form->handleRequest($request);
+
+                    if($form->isSubmitted() && $form->isValid())
+                        {
+                            $em->flush();
+                            return $this->redirectToRoute('app_auteur_liste');
+                        }
+
+
+            return $this->render('auteur/update.html.twig',['form'=>$form]);
         }
 }
