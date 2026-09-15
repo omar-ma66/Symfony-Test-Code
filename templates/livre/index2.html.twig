@@ -73,7 +73,8 @@ a {
         <thead>
             <tr>
                 <th>Titre</th>
-                <th>Date</th>
+                <th>Date</th>  
+                <th>Auteur</th>
                 <th>Action</th>
                 <th>Edite</th>
               
@@ -84,6 +85,7 @@ a {
                 <tr>
                     <td>{{ livre.titre }}</td>
                     <td>{{ livre.date|date('d/m/Y') }}</td>
+                    <td>{{livre.auteur.nom }} {{ livre.auteur.prenom }}</td>
                     <td>
                         <form method="POST" action="{{ path('app_livre_delete', { id: livre.id }) }}" onsubmit="return confirm('Es-tu sûr de vouloir le supprimer ?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">

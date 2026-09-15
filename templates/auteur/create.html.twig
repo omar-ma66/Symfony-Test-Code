@@ -1,0 +1,26 @@
+
+{% extends "base.html.twig" %}
+{% block title %} Page Auteur create {% endblock %}
+
+{% block body %}
+        <style></style>
+
+                    <h1> Nouveau Auteur </h1>
+
+
+                
+                    {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        {{ form_widget(form) }}
+
+                <button type="submit">Enregistrer</button> 
+                    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    console.log('hello auteur');
+</script>
+
+{% endblock %}

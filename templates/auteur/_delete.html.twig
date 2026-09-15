@@ -1,0 +1,10 @@
+
+ {% block body %} 
+     <form method="POST" action="{{ path('app_auteur_delete',{id:auteurID}) }}" onsubmit="return confirm('ete vous sur de cet suppression ?');" >
+        <input type="hidden"  name="_token" value="{{csrf_token('delete' ~ auteurID )}}">
+        <button type="submit"> Supprimer</button> 
+    </form>
+{% endblock %} 
+
+
+

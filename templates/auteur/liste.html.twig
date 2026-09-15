@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block name %} Page Auteur{% endblock %}
+
+{% block body %}
+<style>
+ table{
+    text-align:center ;
+    width: 800px;
+    margin:0 auto ;
+ }
+ table tr{
+        background-color :gray ;
+ }
+
+</style>
+
+                    <h1> page Auteur</h1>
+                     {% if auteurs|length > 0 %}
+                        <p> il y a des données dans auteur  : taille {{ auteurs|length }}</p>
+
+<table> 
+    <tr> 
+        <th>nom</th><th>prenom</th><th>supprimer</th>
+    </tr>
+                            {% for auteur in auteurs %}
+<tr>
+        <td>{{ auteur.nom }}</td>
+        <td>{{ auteur.prenom }}</td>
+        <td>{{ include('auteur/_delete.html.twig',{auteurID: auteur.id}) }}</td>
+</tr>
+
+                                
+                            {% endfor %}
+</table>
+<a href="{{ path('app_auteur')}}">Retour Accueil</a>
+<a href="{{ path('app_auteur_new')}}">Ajouter Un Auteur</a>
+
+                     {% else %}
+                        <p> le tableau auteur n'es pas valide</p>
+                     {% endif %}
+                     
+{% endblock %}
+
+{% block javascripts %}
+<script >
+        console.log ('bonjour auteur');
+</script>
+{% endblock %}

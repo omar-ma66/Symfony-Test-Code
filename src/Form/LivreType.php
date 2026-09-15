@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Auteur;
 use App\Entity\Livre;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -22,6 +24,13 @@ class LivreType extends AbstractType
                 'input' => 'datetime_immutable'
             ])
             ->add('prix',MoneyType::class)
+            ->add('auteur',EntityType::class,[
+                'class' => Auteur::class,
+                'choice_label'=> function(Auteur $auteur){
+                    return $auteur->getNom(). ' '.$auteur->getPrenom();
+                },
+                'placeholder'=>'Choisissez un auteur'
+            ])
         ;
     }
 
