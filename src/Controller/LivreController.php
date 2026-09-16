@@ -53,6 +53,7 @@ final class LivreController extends AbstractController
 
 
 #[Route('/supprime/{id}',name:'app_livre_delete',methods:['POST'] ,requirements :['id' =>Requirement::DIGITS])]
+#[IsGranted('ROLE_ADMIN')]
 public function delete(Request $request ,EntityManagerInterface $em,Livre $livre):Response
 {
   
@@ -67,6 +68,7 @@ if($this->isCsrfTokenValid('delete' . $livre->getId() ,(string) $request->reques
 
 // ####################################################################
 #[Route('/update/{id}',name: 'app_livre_update',methods:['GET','POST'],requirements:['id' => Requirement::DIGITS])]
+#[IsGranted('ROLE_USER')]
 public function update(Request $request,Livre $livre ,EntityManagerInterface $em):Response
 {
 

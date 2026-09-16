@@ -1,20 +1,118 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil - Bibliothèque{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .home-container {
+        max-width: 800px;
+        margin: 60px auto;
+        padding: 40px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        text-align: center;
+    }
+
+    .home-header h1 {
+        margin: 0 0 12px 0;
+        color: #0f172a;
+        font-size: 2.25rem;
+        font-weight: 700;
+    }
+
+    .home-header p {
+        margin: 0 0 32px 0;
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+
+    .user-badge {
+        display: inline-block;
+        background-color: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 24px;
+    }
+
+    .actions-group {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-primary {
+        background-color: #16a34a;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background-color: #15803d;
+    }
+
+    .btn-secondary {
+        background-color: #f1f5f9;
+        color: #334155;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
+
+    .btn-danger {
+        background-color: #fee2e2;
+        color: #dc2626;
+    }
+
+    .btn-danger:hover {
+        background-color: #fca5a5;
+        color: #991b1b;
+    }
+
+    .btn:active {
+        transform: scale(0.99);
+    }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="home-container">
+    <div class="home-header">
+        <h1>Bienvenue sur votre Application</h1>
+        <p>Gérez vos livres et vos auteurs en toute simplicité.</p>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/wamp64/www/REACT/Symfony-test/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/wamp64/www/REACT/Symfony-test/templates/home/index.html.twig</code></li>
-    </ul>
+    {% if app.user %}
+        <div class="user-badge">
+            Connecté en tant que {{ app.user.userIdentifier }}
+        </div>
+
+        <div class="actions-group">
+            <a href="{{ path('app_livre') }}" class="btn btn-primary">Voir les livres</a>
+            <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
+        </div>
+    {% else %}
+        <div class="actions-group">
+            <a href="{{ path('app_login') }}" class="btn btn-primary">Se connecter</a>
+            <a href="{{ path('app_register') }}" class="btn btn-secondary">Créer un compte</a>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

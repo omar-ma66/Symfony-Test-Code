@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Throwable;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AuteurController extends AbstractController
 {
@@ -36,7 +37,9 @@ $all = $ar->findAll();
             return $this->render('auteur/liste.html.twig',["auteurs" => $all]);
     }
 // ##########################################################################################
+
     #[Route('/auteur/nouveau',name:'app_auteur_new',methods:['GET','POST'])]
+    #[IsGranted('ROLE_USER')]
    public function  create(EntityManagerInterface $em,Request $request):Response
    {
       $auteur = new Auteur();
@@ -55,6 +58,8 @@ $all = $ar->findAll();
    }
 
    #[Route('/auteur/delete/{id}',name:'app_auteur_delete',methods:['POST'],requirements:['id'=> Requirement::DIGITS])]
+    #[IsGranted('ROLE_ADMIN')]
+  
    public function delete(Auteur $auteur,EntityManagerInterface $em ,Request $request)
    {
     
@@ -70,6 +75,8 @@ $all = $ar->findAll();
    }
 // ##########################################################################################
         #[Route('/auteur/edite/{id}',name:'app_auteur_update',methods:['GET','POST'])]
+        #[IsGranted('ROLE_USER')]
+
         public function update(Auteur $auteur ,EntityManagerInterface $em ,Request $request):Response
         {
 
