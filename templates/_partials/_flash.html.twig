@@ -1,0 +1,12 @@
+{% if app.flashes is not empty %}
+    <div class="flash-container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-message flash-{{ label }}">
+                    <span>{{ message }}</span>
+                    <button type="button" class="flash-close" onclick="this.parentElement.remove();">&times;</button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}

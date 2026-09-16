@@ -6,15 +6,11 @@ use App\Entity\Auteur;
 use App\Form\AuteurType;
 use App\Repository\AuteurRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\CssSelector\Node\MatchingNode;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
-use Throwable;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AuteurController extends AbstractController
@@ -49,7 +45,9 @@ $all = $ar->findAll();
         {
             $em->persist($auteur);
             $em->flush();
-            return $this->redirectToRoute('app_auteur');
+                            $this->addFlash('success',"l'auteur a bien été créer");
+
+            return $this->redirectToRoute('app_auteur_liste');
         }
         return $this->render('auteur/create.html.twig',[
             'form'=>$form
@@ -67,7 +65,9 @@ $all = $ar->findAll();
             {
                 $em->remove($auteur);
                 $em->flush();
-                return $this->redirectToRoute('app_auteur');
+               $this->addFlash('success',"l'auteur a bien été supprimé ");
+
+                return $this->redirectToRoute('app_auteur_liste');
             }
 
     return $this->render('auteur/liste.html.twig');
@@ -86,6 +86,7 @@ $all = $ar->findAll();
                     if($form->isSubmitted() && $form->isValid())
                         {
                             $em->flush();
+                            $this->addFlash('success','votre mise a jour est actualisé');
                             return $this->redirectToRoute('app_auteur_liste');
                         }
 

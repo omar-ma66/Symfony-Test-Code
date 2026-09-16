@@ -24,7 +24,14 @@ class Auteur
     /**
      * @var Collection<int, Livre>
      */
-    #[ORM\OneToMany(targetEntity: Livre::class, mappedBy: 'auteur')]
+
+    // #[ORM\OneToMany(targetEntity: Livre::class, mappedBy: 'auteur')]
+    // Dans src/Entity/Auteur.php
+    
+    /* SI JE SUPPRIME UN AUTEUR TOUS SES LIVRES DANS l'ENTITE LIVRE SERONT SUPPRIMES
+    */
+    #[ORM\OneToMany(targetEntity: Livre::class, mappedBy: 'auteur', cascade: ['remove'])]
+    
     private Collection $livres;
 
     public function __construct()

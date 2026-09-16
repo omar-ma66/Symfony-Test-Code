@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
         {% block stylesheets %}
         {% endblock %}
 
@@ -13,15 +14,85 @@
 
         {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
         {% if frankenphp_hot_reload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+            <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+            <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+            <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
         {% endif %}
+
+        <style>
+            /* Container des notifications */
+            .flash-container {
+                max-width: 1200px;
+                margin: 20px auto 0 auto;
+                padding: 0 20px;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+
+            /* Style de base des alertes */
+            .flash-message {
+                padding: 14px 18px;
+                border-radius: 10px;
+                margin-bottom: 16px;
+                font-size: 0.95rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                animation: fadeIn 0.3s ease-in-out;
+            }
+
+            .flash-success {
+                background-color: #f0fdf4;
+                color: #166534;
+                border: 1px solid #bbf7d0;
+            }
+
+            .flash-danger, .flash-error {
+                background-color: #fef2f2;
+                color: #991b1b;
+                border: 1px solid #fecaca;
+            }
+
+            .flash-info {
+                background-color: #eff6ff;
+                color: #1e40af;
+                border: 1px solid #bfdbfe;
+            }
+
+            .flash-warning {
+                background-color: #fffbeb;
+                color: #92400e;
+                border: 1px solid #fde68a;
+            }
+
+            .flash-close {
+                background: none;
+                border: none;
+                color: inherit;
+                font-size: 1.25rem;
+                font-weight: bold;
+                cursor: pointer;
+                opacity: 0.6;
+                padding: 0 0 0 12px;
+                line-height: 1;
+                transition: opacity 0.2s;
+            }
+
+            .flash-close:hover { opacity: 1; }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-8px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        </style>
     </head>
     <body>
-        {{ include ('_partials/_header.html.twig')  }}
-        {% block body %}{% endblock %}
-        {{ include ('_partials/_footer.html.twig') }}
+        {{ include('_partials/_header.html.twig') }}
+        {{ include('_partials/_flash.html.twig') }}
 
+        {% block body %}{% endblock %}
+
+        {{ include('_partials/_footer.html.twig') }}
     </body>
 </html>
