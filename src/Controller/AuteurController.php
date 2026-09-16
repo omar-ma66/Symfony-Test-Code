@@ -90,9 +90,6 @@ $all = $ar->findAll();
                             // return $this->redirectToRoute('app_auteur_liste',[],Response::HTTP_SEE_OTHER);
                             return $this->redirectToRoute('app_auteur_liste');
                         }
-                   
-
-
             return $this->render('auteur/update.html.twig',['form'=>$form->createView()]);
         }
 }
