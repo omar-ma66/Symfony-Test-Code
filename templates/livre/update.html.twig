@@ -1,149 +1,195 @@
 {% extends "base.html.twig" %}
-{% block title %} Fichier update html twig{% endblock %}
+
+{% block title %}Modifier le Livre{% endblock %}
 
 {% block body %}
-    {# /* <style>
-    table {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: center;
-    font-size: 110%;
-    border-collapse: collapse;
-}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 32px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-th, td {
-    padding: 12px 8px;
-    border-bottom: 1px solid #e2e8f0;
-}
+    .form-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
 
-th {
-    background-color: #f8fafc;
-    font-weight: bold;
-}
+    .form-header h1 {
+        margin: 0 0 8px 0;
+        color: #0f172a;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
 
-ul {
-    display: flex;
-    list-style-type: none;
-    justify-content: flex-end;
-    padding: 0;
-}
+    .form-header p {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.9rem;
+    }
 
-a {
-    display: inline-block;
-    padding: 10px 16px;
-    background-color: green;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-}
+    .route-info {
+        display: inline-block;
+        background-color: #f1f5f9;
+        color: #475569;
+        font-size: 0.8rem;
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-top: 8px;
+        font-family: monospace;
+    }
 
-.btn-delete {
-    background-color: #ef4444;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-}
+    /* Organisation des champs du formulaire */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
 
-.btn-delete:hover {
-    background-color: #dc2626;
-    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
-}
+    .form-group label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.95rem;
+    }
 
-.btn-delete:active {
-    transform: scale(0.97);
-}
-    </style> */ #}
-    <h1> Page update </h1>
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #0f172a;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
 
- {% if app.current_route  == 'app_livre_update'%}
-   <p> vous ete bien sur la route  {{ app.current_route }}</p>
-   <p> {{ absolute_url(path(app.current_route,{id: form.vars.data.id } )) }}</p>
- {% endif %}  
+    .form-group input:focus, 
+    .form-group select:focus, 
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #16a34a;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+    }
 
+    /* Message d'erreur */
+    .form-error {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 6px;
+        font-weight: 500;
+    }
 
-{{ dump(tableau) }}
+    /* Bouton principal */
+    .btn-submit {
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px 20px;
+        background-color: #16a34a;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
 
-  {# <p> voila un test {{ app.request }} </p> #}
+    .btn-submit:hover {
+        background-color: #15803d;
+    }
 
+    .btn-submit:active {
+        transform: scale(0.99);
+    }
 
-             {{  include ('_partials/montest.html.twig',{titre:'un super titre',auteur:'stephen king'})  }}  
+    /* Navigation inférieure */
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        list-style: none;
+        padding: 0;
+        margin-top: 28px;
+    }
 
+    .nav-links a {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #f1f5f9;
+        color: #334155;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
 
+    .nav-links a:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
+</style>
 
-                    {% set mavariable = 1000 %}
-                        <p>{{ mavariable }}</p>
-                    {% set monTableau  = [1,2,3,4,5] %}
-                        <p> {{ monTableau|length }}</p>    
-                         
-                    {% set tabasc = {'clef' : 'valeur'} %}
-                          <p> {{ tabasc.clef }}</p>  
-                            
-                    
-
-
-
-                {% if form|length > 0 %}
-                    <p> le formulaire n'est pas vide </p>
-                {% else %}
-                    <p> le formulaire est vide </p>
-                {% endif  %}        
-
-                {% if tableau|length > 0  %}
-                  <p> le tableau est valide</p>
-
-                        {% for data in tableau %}
-                                <p> {{ data }}  et l'index  {{loop.index }}</p>
-                         {% endfor %}
-                {% else %}
-                 <p> le tableau n'est pas valide</p>
-                 {% endif %}  
-
-
+<div class="form-container">
+    <div class="form-header">
+        <h1>Modifier le Livre</h1>
+        {% if app.current_route == 'app_livre_update' %}
+            <span class="route-info">Route : {{ app.current_route }}</span>
+        {% endif %}
+    </div>
 
     {{ form_start(form) }}
         {{ form_errors(form) }}
-    <div class="boite">
-        <div>
-            {{ form_label(form.titre,'Titre du livre',{'label_attr':{'class':' ' } }) }}
-            {{ form_widget(form.titre ,{'attr':{'class':' ' } }) }}
-            {{ form_errors(form.titre) }}
-        </div>    
-        <div>
-            {{ form_label(form.date ,'Date du livre ',{'label_attr':{'class':' '} }) }}
-            {{ form_widget(form.date,{'attr':{'class':' '} }) }}
-            {{ form_errors(form.date) }}
-        </div>
-      <div>
-            {{ form_label(form.prix ,'Prix du livre ',{'label_attr':{'class':' '} }) }}
-            {{ form_widget(form.prix ,{'attr':{'class':' '} }) }}
-            {{ form_errors(form.prix) }}
-        </div>
-            <div>
-            {{ form_label(form.auteur ,"Nom de l'auteur ",{'label_attr':{'class':' '} }) }}
-            {{ form_widget(form.auteur ,{'attr':{'class':' '} }) }}
-            {{ form_errors(form.auteur) }}
-        </div>
-        {{ form_rest(form) }}
-       <button type="submit"> Modiffier </button>  
-    </div>    
-   
-    {{ form_end(form) }}
- 
 
-    <a href="{{ path('app_livre') }}"> retour page livre </a>
-    
+        <div class="form-group">
+            {{ form_label(form.titre, 'Titre du livre') }}
+            {{ form_widget(form.titre) }}
+            <div class="form-error">{{ form_errors(form.titre) }}</div>
+        </div>    
+
+        <div class="form-group">
+            {{ form_label(form.date, 'Date de parution') }}
+            {{ form_widget(form.date) }}
+            <div class="form-error">{{ form_errors(form.date) }}</div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.prix, 'Prix du livre (€)') }}
+            {{ form_widget(form.prix) }}
+            <div class="form-error">{{ form_errors(form.prix) }}</div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.auteur, "Nom de l'auteur") }}
+            {{ form_widget(form.auteur) }}
+            <div class="form-error">{{ form_errors(form.auteur) }}</div>
+        </div>
+
+        {{ form_rest(form) }}
+
+        <button type="submit" class="btn-submit">Mettre à jour</button>
+    {{ form_end(form, {'render_rest': false}) }}
+
+    <ul class="nav-links">
+        <li><a href="{{ path('app_livre') }}">← Retour au catalogue</a></li>
+        <li><a href="{{ path('app_auteur_liste') }}">Liste des auteurs</a></li>
+    </ul>
+</div>
 {% endblock %}
 
-
 {% block javascripts %}
+    {{ parent() }}
     <script>
-        console.log("hello world");
+        console.log("Formulaire d'édition chargé.");
     </script>
 {% endblock %}

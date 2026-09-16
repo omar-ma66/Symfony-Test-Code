@@ -1,3 +1,4 @@
 body {
-    background-color: skyblue;
+    background-color: #0f172a; /* Bleu très sombre (style Slate) */
+    color: #f1f5f9;            /* Texte blanc cassé */
 }

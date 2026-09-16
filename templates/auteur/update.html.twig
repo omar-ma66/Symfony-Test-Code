@@ -1,44 +1,153 @@
 {% extends "base.html.twig" %}
-{% block  title %}Edit Auteur {% endblock %}
-
+{% block title %}Modifier un Auteur{% endblock %}
 
 {% block body %}
 <style>
-.boite{
-    display:flex;
-}
-.container{
-    display:flex;
-    gap:10px;
-}
+    .form-container {
+        max-width: 550px;
+        margin: 40px auto;
+        padding: 32px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
+    h1 {
+        margin-top: 0;
+        margin-bottom: 24px;
+        color: #1e293b;
+        font-size: 1.75rem;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    /* Organisation des champs en colonne */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.95rem;
+    }
+
+    .form-group input[type="text"] {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #0f172a;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .form-group input[type="text"]:focus {
+        outline: none;
+        border-color: #16a34a;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+    }
+
+    /* Style du bouton */
+    .btn-submit {
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px 20px;
+        background-color: #16a34a;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #15803d;
+    }
+
+    .btn-submit:active {
+        transform: scale(0.99);
+    }
+
+    /* Styles des erreurs */
+    .form-error {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 4px;
+    }
+
+    /* Liens sous le formulaire */
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        list-style: none;
+        padding: 0;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #f1f5f9;
+        color: #334155;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
 </style>
 
+<div class="form-container">
+    <h1>Modifier l'Auteur</h1>
 
-                           {{  form_start(form)  }}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-<div class="container"> 
-                        <div class="boite">
-                                {{ form_label(form.nom,"Nom de l'auteur",{'label_attr':{'class':' '}} ) }}
-                                {{ form_widget(form.nom,{'attr':{'style':'width:200px; '}}) }}
-                                {{ form_errors(form.nom) }}
-                        </div>
-                        <div class="boite">
-                                {{ form_label(form.prenom ,"Prenom de l'auteur",{"label_attr":{"class":" "}}) }}
-                                {{ form_widget(form.prenom ,{'attr':{'style':'width:200px; '}}) }}
-                                {{ form_errors(form.prenom) }}
-                        </div>
+        <div class="form-group">
+            {{ form_label(form.nom, "Nom de l'auteur") }}
+            {{ form_widget(form.nom) }}
+            <div class="form-error">{{ form_errors(form.nom) }}</div>
+        </div>
 
-                            <button type="submit">Modiffier</button>
-   </div>                         
-                           {{ form_end(form) }}
+        <div class="form-group">
+            {{ form_label(form.prenom, "Prénom de l'auteur") }}
+            {{ form_widget(form.prenom) }}
+            <div class="form-error">{{ form_errors(form.prenom) }}</div>
+        </div>
 
+        {{ form_rest(form) }}
 
+        <button type="submit" class="btn-submit">Modifier</button>
+    {{ form_end(form, {'render_rest': false}) }}
+
+    <ul class="nav-links">
+        <li><a href="{{ path('app_auteur_liste') }}">Liste des auteurs</a></li>
+        <li><a href="{{ path('app_livre') }}">Liste des livres</a></li>
+    </ul>
+</div>
 {% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
-    <script>
-        console.log('Edit Auteur');
-    </script>
+<script>
+    console.log('Edit Auteur');
+</script>
 {% endblock %}

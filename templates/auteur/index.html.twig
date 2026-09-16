@@ -1,30 +1,121 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AuteurController!{% endblock %}
+{% block title %}Page d'Accueil - Gestion Bibliothèque{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .home-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 0 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-   a{
-    margin:10px;
-    text-decoration:none;
-    padding:10px;
-    border:1px solid green ;
-    background-color:green ;
-    color:white;
-    border-radius:10px;
-   } 
-   ul{list-style-type: none;}
-   li{margin:25px ;}
+    .home-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .home-header h1 {
+        font-size: 2.25rem;
+        color: #0f172a;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .home-header p {
+        color: #64748b;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    /* Grille de cartes pour les liens */
+    .navigation-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .nav-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 20px;
+        background-color: #ffffff;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        text-decoration: none;
+        color: #1e293b;
+        font-weight: 600;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        transition: all 0.25s ease-in-out;
+        text-align: center;
+    }
+
+    /* Styles différenciés par section */
+    .nav-card.auteur {
+        border-color: #bbf7d0;
+        background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+    }
+
+    .nav-card.livre {
+        border-color: #bae6fd;
+        background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+    }
+
+    /* Effets au survol */
+    .nav-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-card.auteur:hover {
+        border-color: #16a34a;
+        color: #15803d;
+    }
+
+    .nav-card.livre:hover {
+        border-color: #0284c7;
+        color: #0369a1;
+    }
+
+    .nav-card span {
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: #64748b;
+        margin-top: 6px;
+    }
 </style>
 
+<div class="home-container">
+    <div class="home-header">
+        <h1>Gestion de la Bibliothèque</h1>
+        <p>Sélectionnez une action pour commencer</p>
+    </div>
 
-            <h1>Page Accueil </h1>
-<div class="example-wrapper">
+    <div class="navigation-grid">
+        <a href="{{ path('app_auteur_new') }}" class="nav-card auteur">
+            Ajouter un auteur
+            <span>Enregistrer un nouvel auteur</span>
+        </a>
+        
+        <a href="{{ path('app_auteur_liste') }}" class="nav-card auteur">
+            Liste des auteurs
+            <span>Consulter et gérer les auteurs</span>
+        </a>
 
-        <a href="{{ path('app_auteur_new') }}">Ajouter un auteur</a>
-        <a href="{{ path('app_auteur_liste') }}">Liste des auteurs</a>
-</div>                
+        <a href="{{ path('app_livre_create') }}" class="nav-card livre">
+            Ajouter un livre
+            <span>Ajouter un ouvrage au catalogue</span>
+        </a>
+
+        <a href="{{ path('app_livre') }}" class="nav-card livre">
+            Liste des livres
+            <span>Consulter le catalogue complet</span>
+        </a>
+    </div>
+</div>
 {% endblock %}

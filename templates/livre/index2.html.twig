@@ -1,114 +1,249 @@
  {% extends "base.html.twig" %}
 
-{% block title %} Page index 2 html twig {% endblock %}
+{% block title %}Catalogue des Livres{% endblock %}
 
 {% block body %}
 <style>
-table {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: center;
-    font-size: 110%;
-    border-collapse: collapse;
-}
+    .page-container {
+        max-width: 950px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-th, td {
-    padding: 12px 8px;
-    border-bottom: 1px solid #e2e8f0;
-}
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
 
-th {
-    background-color: #f8fafc;
-    font-weight: bold;
-}
+    .page-header h1 {
+        font-size: 1.875rem;
+        color: #0f172a;
+        margin: 0;
+        font-weight: 700;
+    }
 
-ul {
-    display: flex;
-    list-style-type: none;
-    justify-content: flex-end;
-    padding: 0;
-}
+    .count-badge {
+        background-color: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
 
-a {
-    display: inline-block;
-    padding: 10px 16px;
-    background-color: green;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-}
+    /* Structure du Tableau */
+    .table-container {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
 
-.btn-delete {
-    background-color: #ef4444;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
 
-.btn-delete:hover {
-    background-color: #dc2626;
-    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
-}
+    thead {
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+    }
 
-.btn-delete:active {
-    transform: scale(0.97);
-}
+    th {
+        padding: 14px 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+    }
+
+    td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.95rem;
+        vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    /* Badges & Textes */
+    .author-name {
+        font-weight: 500;
+        color: #1e293b;
+    }
+
+    .date-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #f1f5f9;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        color: #475569;
+    }
+
+    /* Actions & Boutons */
+    .actions-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-edit {
+        display: inline-block;
+        padding: 7px 14px;
+        background-color: #3b82f6;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-edit:hover {
+        background-color: #2563eb;
+    }
+
+    .btn-delete {
+        background-color: #ef4444;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 0.875rem;
+        padding: 7px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-delete:hover {
+        background-color: #dc2626;
+    }
+
+    /* Message tableau vide */
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        margin-bottom: 30px;
+    }
+
+    /* Barre de navigation inférieure */
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        display: inline-block;
+        padding: 9px 18px;
+        background-color: #f1f5f9;
+        color: #334155;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
+
+    .nav-links a.btn-primary {
+        background-color: #16a34a;
+        color: #ffffff;
+    }
+
+    .nav-links a.btn-primary:hover {
+        background-color: #15803d;
+    }
 </style>
 
+<div class="page-container">
+    <div class="page-header">
+        <h1>Catalogue des Livres</h1>
+        {% if livres|length > 0 %}
+            <span class="count-badge">{{ livres|length }} livre(s) disponible(s)</span>
+        {% endif %}
+    </div>
 
+    {% if livres|length > 0 %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Date de parution</th>  
+                        <th>Auteur</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for livre in livres %}
+                        <tr>
+                            <td><strong>{{ livre.titre }}</strong></td>
+                            <td>
+                                <span class="date-badge">{{ livre.date|date('d/m/Y') }}</span>
+                            </td>
+                            <td>
+                                {% if livre.auteur is not null %}
+                                    <span class="author-name">{{ livre.auteur.nom }} {{ livre.auteur.prenom }}</span>
+                                {% else %}
+                                    <em style="color: #94a3b8;">Auteur inconnu</em>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="{{ path('app_livre_update', {id: livre.id}) }}" class="btn-edit">Éditer</a>
+                                    
+                                    <form method="POST" action="{{ path('app_livre_delete', { id: livre.id }) }}" onsubmit="return confirm('Es-tu sûr de vouloir le supprimer ?');" style="margin: 0;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">
+                                        <button class="btn-delete" type="submit">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aucun livre disponible pour le moment.</p>
+        </div>
+    {% endif %}
 
-{% if livres|length > 0 %}
-    <p style="text-align: center; font-weight: bold;">
-        Nombre de livre(s) : {{ livres|length }}
-    </p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Date</th>  
-                <th>Auteur</th>
-                <th>Action</th>
-                <th>Edite</th>
-              
-            </tr>
-        </thead>
-        <tbody>
-            {% for livre in livres %}
-                <tr>
-                    <td>{{ livre.titre }}</td>
-                    <td>{{ livre.date|date('d/m/Y') }}</td>
-                    <td>{{livre.auteur.nom }} {{ livre.auteur.prenom }}</td>
-                    <td>
-                        <form method="POST" action="{{ path('app_livre_delete', { id: livre.id }) }}" onsubmit="return confirm('Es-tu sûr de vouloir le supprimer ?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">
-                            <button class="btn-delete" type="submit">Supprimer</button>
-                        </form>
-                    </td>
-                    <td>
-                        <a href="{{ path('app_livre_update',{id: livre.id}) }}">Edite</a>
-                    </td>
-                    
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p style="text-align: center;">Aucun livre disponible pour le moment.</p>
-{% endif %}
-
-<ul>
-    <li>
-        <a href="{{ path('app_livre_create') }}">Ajouter un livre</a>
-    </li>
-</ul>
-
-
+    <ul class="nav-links">
+        <li><a href="{{ path('app_livre_create') }}" class="btn-primary">Ajouter un livre</a></li>
+        <li><a href="{{ path('app_auteur_new') }}">Ajouter un auteur</a></li>
+        <li><a href="{{ path('app_auteur_liste') }}">Liste des auteurs</a></li>
+        <li><a href="{{ path('app_livre') }}">Liste des livres</a></li>
+    </ul>
+</div>
 {% endblock %}

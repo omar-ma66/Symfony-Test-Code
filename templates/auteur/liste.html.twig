@@ -1,50 +1,201 @@
 {% extends "base.html.twig" %}
 
-{% block name %} Page Auteur{% endblock %}
+{% block title %}Page Auteur{% endblock %}
 
 {% block body %}
 <style>
- table{
-    text-align:center ;
-    width: 800px;
-    margin:0 auto ;
- }
- table tr{
-        background-color :gray ;
- }
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+        font-size: 1.875rem;
+        color: #0f172a;
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .count-badge {
+        background-color: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    /* Style du Tableau */
+    .table-container {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    thead {
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+        padding: 14px 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+    }
+
+    td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.95rem;
+        vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    /* Boutons d'action */
+    .btn-edit {
+        display: inline-block;
+        padding: 6px 14px;
+        background-color: #3b82f6;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-edit:hover {
+        background-color: #2563eb;
+    }
+
+    /* Message tableau vide */
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        margin-bottom: 30px;
+    }
+
+    /* Liens du bas */
+    .actions-footer {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+    }
+
+    .btn-secondary, .btn-primary {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .btn-secondary {
+        background-color: #f1f5f9;
+        color: #475569;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
+
+    .btn-primary {
+        background-color: #16a34a;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background-color: #15803d;
+    }
 </style>
 
-                    <h1> page Auteur</h1>
-                     {% if auteurs|length > 0 %}
-                        <p> il y a des données dans auteur  : taille {{ auteurs|length }}</p>
+<div class="page-container">
+    <div class="page-header">
+        <h1>Liste des Auteurs</h1>
+        {% if auteurs|length > 0 %}
+            <span class="count-badge">{{ auteurs|length }} auteur(s) trouvé(s)</span>
+        {% endif %}
+    </div>
 
-<table> 
-    <tr> 
-        <th>nom</th><th>prenom</th><th>supprimer</th><th>edite</th>
-    </tr>
-                            {% for auteur in auteurs %}
-<tr>
-        <td>{{ auteur.nom }}</td>
-        <td>{{ auteur.prenom }}</td>
-        <td>{{ include('auteur/_delete.html.twig',{auteurID: auteur.id}) }}</td>
-        <td><a href="{{ path('app_auteur_update',{id: auteur.id}) }} "> Edite </a></td>
-</tr>
+    {% if auteurs|length > 0 %}
+        <div class="table-container">
+            <table> 
+                <thead>
+                    <tr> 
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th style="text-align: center;">Éditer</th>
+                        <th style="text-align: center;">Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for auteur in auteurs %}
+                        <tr>
+                            <td><strong>{{ auteur.nom }}</strong></td>
+                            <td>{{ auteur.prenom }}</td>
+                            <td style="text-align: center;">
+                                <a href="{{ path('app_auteur_update', {id: auteur.id}) }}" class="btn-edit">Éditer</a>
+                            </td>
+                            <td style="text-align: center;">
+                                {{ include('auteur/_delete.html.twig', {auteurID: auteur.id}) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aucun auteur trouvé dans la base de données.</p>
+        </div>
+    {% endif %}
 
-                                
-                            {% endfor %}
-</table>
-<a href="{{ path('app_auteur')}}">Retour Accueil</a>
-<a href="{{ path('app_auteur_new')}}">Ajouter Un Auteur</a>
-
-                     {% else %}
-                        <p> le tableau auteur n'es pas valide</p>
-                     {% endif %}
-                     
+    <div class="actions-footer">
+        <a href="{{ path('app_auteur') }}" class="btn-secondary">Retour Accueil</a>
+        <a href="{{ path('app_auteur_new') }}" class="btn-primary">Ajouter Un Auteur</a>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
-<script >
-        console.log ('bonjour auteur');
+<script>
+    console.log('bonjour auteur');
 </script>
 {% endblock %}
