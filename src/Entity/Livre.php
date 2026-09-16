@@ -27,6 +27,9 @@ class Livre
     #[ORM\JoinColumn(nullable: false)]
     private ?Auteur $auteur = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $categorie = "Roman";
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Livre
     public function setAuteur(?Auteur $auteur): static
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): static
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

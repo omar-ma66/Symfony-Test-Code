@@ -70,11 +70,16 @@
                                 {{ form_widget(form.prix) }}
                                 {{ form_errors(form.prix) }} 
                         </div>
+                         <div>
+                                {{ form_label(form.categorie) }}
+                                {{ form_widget(form.categorie) }}
+                                {{ form_errors(form.categorie) }} 
+                        </div>
                            <div>
                                 {{ form_label(form.auteur) }}
                                 {{ form_widget(form.auteur) }}
                                 {{ form_errors(form.auteur) }} 
-                        </div>
+                          </div>
 
                                        <button class ="btn-submit" type="submit" >Enregistrer</button>
 </div>

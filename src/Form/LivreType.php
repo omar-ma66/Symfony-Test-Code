@@ -7,6 +7,7 @@ use App\Entity\Livre;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\MoneyToLocalizedStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,6 +31,17 @@ class LivreType extends AbstractType
                     return $auteur->getNom(). ' '.$auteur->getPrenom();
                 },
                 'placeholder'=>'Choisissez un auteur'
+            ])
+            ->add('categorie',ChoiceType::class,[
+                'choices'=>[
+                    "Roman"=>"roman",
+                    "Science"=>"science",
+                    "Science-fiction" =>"science-fiction",
+                    "Fantastique" =>"fantastique",
+                    "Policier" => "policier",
+                    "Poetique" =>"poetique",
+                    "Horreur" => "horreur"
+                    ]
             ])
         ;
     }
