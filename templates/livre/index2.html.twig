@@ -201,6 +201,7 @@
                         <th>Titre</th>
                         <th>Date de parution</th>  
                         <th>Auteur</th>
+                        <th>Categorie</th>
                         <th style="text-align: center;">Actions</th>
                     </tr>
                 </thead>
@@ -217,6 +218,9 @@
                                 {% else %}
                                     <em style="color: #94a3b8;">Auteur inconnu</em>
                                 {% endif %}
+                            </td>
+                            <td>
+                                <span><strong>{{livre.categorie }}</strong></span>
                             </td>
                             <td>
                                 <div class="actions-cell">
