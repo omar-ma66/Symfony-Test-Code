@@ -6,6 +6,8 @@ use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\MacAddress;
+use Symfony\Component\Validator\Constraints as Assert ;
 
 #[ORM\Entity(repositoryClass: AuteurRepository::class)]
 class Auteur
@@ -16,9 +18,23 @@ class Auteur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min:2,
+        max:30,
+        minMessage:"le nom de l'auteur doit faire au moin {{ limit}} carractères. ",
+        maxMessage:"le nom de l'auteur ne doit pas depasser {{ limit}} carractères. "
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
+     #[Assert\Length(
+        min:3,
+        max:30,
+        minMessage:"le nom de l'auteur doit faire au moin {{ limit}} carractères. ",
+        maxMessage:"le nom de l'auteur ne doit pas depasser {{ limit}} carractères. "
+    )]
     private ?string $prenom = null;
 
     /**

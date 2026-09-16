@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\LivreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
@@ -15,12 +16,22 @@ class Livre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min:3,
+        max:30,
+        minMessage:'le titre doit faire au moin {{ limit }} carracteres.',
+        maxMessage:'le titre ne doit pas depasser {{ limit }} carracteres.'
+    )]
     private ?string $titre = null;
 
     #[ORM\Column]
+    #[Assert\Type(\DateTimeInterface::class)]
+    #[Assert\NotBlank(message:'le titre ne peut être vide')]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[Assert\Positive()]
     private ?string $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]

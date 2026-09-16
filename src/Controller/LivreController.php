@@ -63,7 +63,7 @@ if($this->isCsrfTokenValid('delete' . $livre->getId() ,(string) $request->reques
         $em->remove($livre);
         
         $em->flush();
-                            $this->addFlash('success','votre livre a bien été supprimé ');
+       $this->addFlash('success','votre livre a bien été supprimé ');
 
     }
     return $this->redirectToRoute('app_livre');
@@ -85,6 +85,7 @@ if($form->isSubmitted() && $form->isValid())
         $em->flush();
           $this->addFlash('success',"votre livre a bien été mis a jour");
 
+    //   return  $this->redirectToRoute('app_livre');
       return  $this->redirectToRoute('app_livre',[],Response::HTTP_SEE_OTHER);
     }
   return $this->render('livre/update.html.twig',["form"=>$form,"livre"=>$livre,"tableau"=>$tableau]);         

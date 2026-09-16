@@ -1,5 +1,5 @@
-{% if app.flashes is not empty %}
-    <div class="flash-container">
+{# {% if app.flashes is not empty %} #}
+    {# <div class="flash-container"> #}
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="flash-message flash-{{ label }}">
@@ -8,5 +8,5 @@
                 </div>
             {% endfor %}
         {% endfor %}
-    </div>
-{% endif %}
+    {# </div> #}
+{# {% endif %} #}

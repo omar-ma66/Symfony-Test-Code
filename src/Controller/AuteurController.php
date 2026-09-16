@@ -58,7 +58,7 @@ $all = $ar->findAll();
    #[Route('/auteur/delete/{id}',name:'app_auteur_delete',methods:['POST'],requirements:['id'=> Requirement::DIGITS])]
     #[IsGranted('ROLE_ADMIN')]
   
-   public function delete(Auteur $auteur,EntityManagerInterface $em ,Request $request)
+   public function delete(Auteur $auteur,EntityManagerInterface $em ,Request $request,AuteurRepository $ar)
    {
     
         if($this->isCsrfTokenValid('delete'.$auteur->getId() ,$request->request->get('_token')))
@@ -70,7 +70,7 @@ $all = $ar->findAll();
                 return $this->redirectToRoute('app_auteur_liste');
             }
 
-    return $this->render('auteur/liste.html.twig');
+    return $this->render('auteur/liste.html.twig',['auteur'=>$ar->findAll()]);
 
    }
 // ##########################################################################################
@@ -87,10 +87,12 @@ $all = $ar->findAll();
                         {
                             $em->flush();
                             $this->addFlash('success','votre mise a jour est actualisé');
+                            // return $this->redirectToRoute('app_auteur_liste',[],Response::HTTP_SEE_OTHER);
                             return $this->redirectToRoute('app_auteur_liste');
                         }
+                   
 
 
-            return $this->render('auteur/update.html.twig',['form'=>$form]);
+            return $this->render('auteur/update.html.twig',['form'=>$form->createView()]);
         }
 }

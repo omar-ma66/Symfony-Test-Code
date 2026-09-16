@@ -88,8 +88,9 @@
         </style>
     </head>
     <body>
-        {{ include('_partials/_header.html.twig') }}
-        {{ include('_partials/_flash.html.twig') }}
+     {{ include('_partials/_header.html.twig') }}
+     {# {{ dump(app.flashes) }} #}
+      {{ include('_partials/_flash.html.twig') }}
 
         {% block body %}{% endblock %}
 
