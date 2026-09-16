@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 // ####################################################################
 #[Route('/livre')]
@@ -27,6 +28,7 @@ final class LivreController extends AbstractController
 // ####################################################################
 
     #[Route('/new',name: 'app_livre_create',methods:['GET','POST'])]
+    #[IsGranted('ROLE_USER')]
     public function create(Request $request,EntityManagerInterface $em ): Response
     {
             $livre = new Livre();

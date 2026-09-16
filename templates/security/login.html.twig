@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<style>
+    .auth-container {
+        max-width: 440px;
+        margin: 60px auto;
+        padding: 40px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .auth-header h1 {
+        margin: 0 0 8px 0;
+        color: #0f172a;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .auth-header p {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* Champs du formulaire */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #0f172a;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #16a34a;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+    }
+
+    /* Case à cocher */
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+        cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #16a34a;
+        cursor: pointer;
+    }
+
+    .checkbox-group label {
+        color: #64748b;
+        font-size: 0.9rem;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /* Bouton d'action */
+    .btn-submit {
+        width: 100%;
+        padding: 12px 20px;
+        background-color: #16a34a;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #15803d;
+    }
+
+    .btn-submit:active {
+        transform: scale(0.99);
+    }
+
+    /* Alerts */
+    .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+
+    .alert-danger {
+        background-color: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    .alert-info {
+        background-color: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .alert a {
+        color: inherit;
+        font-weight: 600;
+    }
+
+    /* Liens d'accès */
+    .auth-footer {
+        margin-top: 24px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .auth-footer a {
+        color: #16a34a;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-header">
+        <h1>Connexion</h1>
+        <p>Bienvenue ! Veuillez entrer vos identifiants.</p>
+    </div>
+
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="alert alert-info">
+            Vous êtes connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>.<br>
+            <a href="{{ logout_path() }}">Déconnexion</a>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Adresse email</label>
+            <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus placeholder="votre@email.com">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" name="_password" id="password" autocomplete="current-password" required placeholder="••••••••">
+        </div>
+
+        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+        <div class="checkbox-group">
+            <input type="checkbox" name="_remember_me" id="_remember_me">
+            <label for="_remember_me">Se souvenir de moi</label>
+        </div>
+
+        <button class="btn-submit" type="submit">
+            Se connecter
+        </button>
+    </form>
+
+    <div class="auth-footer">
+        Pas encore de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous</a>
+    </div>
+</div>
+{% endblock %}

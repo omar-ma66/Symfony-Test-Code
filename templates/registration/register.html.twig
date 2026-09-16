@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<style>
+    .auth-container {
+        max-width: 440px;
+        margin: 60px auto;
+        padding: 40px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .auth-header h1 {
+        margin: 0 0 8px 0;
+        color: #0f172a;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .auth-header p {
+        margin: 0;
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* Champs du formulaire */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="text"] {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #0f172a;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #16a34a;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15);
+    }
+
+    /* Checkbox des conditions d'utilisation */
+    .form-group-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .form-group-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #16a34a;
+        cursor: pointer;
+    }
+
+    .form-group-checkbox label {
+        color: #64748b;
+        font-size: 0.9rem;
+        cursor: pointer;
+        user-select: none;
+        margin: 0;
+    }
+
+    /* Erreurs de validation */
+    .form-error, .alert-danger {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    /* Bouton principal */
+    .btn-submit {
+        width: 100%;
+        padding: 12px 20px;
+        background-color: #16a34a;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #15803d;
+    }
+
+    .btn-submit:active {
+        transform: scale(0.99);
+    }
+
+    /* Liens bas de page */
+    .auth-footer {
+        margin-top: 24px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+    .auth-footer a {
+        color: #16a34a;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-header">
+        <h1>Inscription</h1>
+        <p>Créez votre compte pour accéder à l'application</p>
+    </div>
+
+    {% if form_errors(registrationForm) %}
+        <div class="alert-danger">
+            {{ form_errors(registrationForm) }}
+        </div>
+    {% endif %}
+
+    {{ form_start(registrationForm) }}
+        <div class="form-group">
+            {{ form_label(registrationForm.email, 'Adresse email') }}
+            {{ form_widget(registrationForm.email, {'attr': {'placeholder': 'votre@email.com'}}) }}
+            <div class="form-error">{{ form_errors(registrationForm.email) }}</div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(registrationForm.plainPassword, 'Mot de passe') }}
+            {{ form_widget(registrationForm.plainPassword, {'attr': {'placeholder': '••••••••'}}) }}
+            <div class="form-error">{{ form_errors(registrationForm.plainPassword) }}</div>
+        </div>
+
+        <div class="form-group-checkbox">
+            {{ form_widget(registrationForm.agreeTerms) }}
+            {{ form_label(registrationForm.agreeTerms, "J'accepte les conditions d'utilisation") }}
+            <div class="form-error">{{ form_errors(registrationForm.agreeTerms) }}</div>
+        </div>
+
+        <button type="submit" class="btn-submit">Créer mon compte</button>
+    {{ form_end(registrationForm) }}
+
+    <div class="auth-footer">
+        Vous avez déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a>
+    </div>
+</div>
+{% endblock %}
