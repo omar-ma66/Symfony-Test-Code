@@ -1,0 +1,58 @@
+
+{% extends "base.html.twig" %}
+
+{% block title %} Home test Stimulus JS{% endblock %}
+
+{% block body %}
+<style>
+    .d-none{
+        display:none;
+    }
+    .blanc{
+        background-color :white;
+    }
+    .bleu{
+        background-color:blue;
+    }
+    .rouge{
+        background-color:red;
+    }
+  .pp{
+    color : black ;
+  }
+</style>
+{# templates/mon_template.html.twig #}
+
+{# 1. On déclare le contrôleur sur l'élément parent #}
+{# <div data-controller="toggle"> #}
+    
+    {# 2. On attache l'action 'click' qui appelle la méthode 'toggle' du contrôleur #}
+    {# <button data-action="click->toggle#toggle" class="btn btn-primary">
+        Afficher / Masquer
+    </button> #}
+
+    {# 3. On identifie l'élément cible #}
+    {# <div data-toggle-target="content" class="mt-3">
+        <p>Ce contenu s'affiche et se masque au clic !</p>
+    </div>
+
+</div> #}
+
+
+<div data-controller='toggle'>
+    <button  data-action="click->toggle#toggle"> AFFICHE / MASQUE</button>
+    <button  data-action="click->toggle#fondBleu">Fond Bleu</button>
+    <button  data-action="click->toggle#fondRouge">Fond Rouge</button>
+
+    <div data-toggle-target="content">
+        <p >ce texte s'affiche et ce masque</p>
+    </div>
+
+    <div data-toggle-target="fond" class="blanc">
+        <p class="pp">la couleur de fond va changer</p>
+    </div>
+</div>
+
+
+
+{% endblock %}
