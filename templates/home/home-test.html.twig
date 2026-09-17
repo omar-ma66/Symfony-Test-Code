@@ -56,3 +56,10 @@
 
 
 {% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    console.log("Super Champion .")
+</script>
+{% endblock %}
