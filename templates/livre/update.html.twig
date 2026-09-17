@@ -138,9 +138,21 @@
         background-color: #e2e8f0;
         color: #0f172a;
     }
+    p{
+        color:black;
+    }
 </style>
 
 <div class="form-container">
+
+                {% if listelivres is not null %}
+                {% for livre in listelivres %}
+                        <p> {{ livre.titre }}</p>
+                {% endfor %}
+                {% endif %}
+
+
+
     <div class="form-header">
         <h1>Modifier le Livre</h1>
         {% if app.current_route == 'app_livre_update' %}

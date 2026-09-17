@@ -3,6 +3,13 @@
 
 {% block body %}
 <style>
+
+    p span{
+        color:black;
+    }
+    li span{
+        color:green;
+    }
     .form-container {
         max-width: 550px;
         margin: 40px auto;
@@ -117,6 +124,11 @@
 
 <div class="form-container">
     <h1>Modifier l'Auteur</h1>
+
+
+   
+
+
 
     {{ form_start(form) }}
         {{ form_errors(form) }}

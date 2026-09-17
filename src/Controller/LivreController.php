@@ -72,12 +72,12 @@ if($this->isCsrfTokenValid('delete' . $livre->getId() ,(string) $request->reques
 // ####################################################################
 #[Route('/update/{id}',name: 'app_livre_update',methods:['GET','POST'],requirements:['id' => Requirement::DIGITS])]
 #[IsGranted('ROLE_USER')]
-public function update(Request $request,Livre $livre ,EntityManagerInterface $em):Response
+public function update(Request $request,Livre $livre ,EntityManagerInterface $em ,LivreRepository $lr):Response
 {
-
-$tableau = ["un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix"];
-
-
+      $auteurID   =  $livre->getAuteur();                  
+      $listeLivres =              $lr->findBy(["auteur"=>$auteurID]);
+     
+      dump( $listeLivres );
   $form = $this->createForm(LivreType::class , $livre);
   $form->handleRequest($request);
 if($form->isSubmitted() && $form->isValid())
@@ -88,7 +88,7 @@ if($form->isSubmitted() && $form->isValid())
     //   return  $this->redirectToRoute('app_livre');
       return  $this->redirectToRoute('app_livre',[],Response::HTTP_SEE_OTHER);
     }
-  return $this->render('livre/update.html.twig',["form"=>$form,"livre"=>$livre,"tableau"=>$tableau]);         
+  return $this->render('livre/update.html.twig',["form"=>$form,"livre"=>$livre,'listelivres'=>$listeLivres]);         
 }
 // ####################################################################
 }

@@ -78,7 +78,8 @@ $all = $ar->findAll();
         #[IsGranted('ROLE_USER')]
 
         public function update(Auteur $auteur ,EntityManagerInterface $em ,Request $request):Response
-        {
+        {      
+                $livres  = $auteur->getLivres();
 
                 $form = $this->createForm(AuteurType::class,$auteur);
                 $form->handleRequest($request);
@@ -90,6 +91,19 @@ $all = $ar->findAll();
                             // return $this->redirectToRoute('app_auteur_liste',[],Response::HTTP_SEE_OTHER);
                             return $this->redirectToRoute('app_auteur_liste');
                         }
-            return $this->render('auteur/update.html.twig',['form'=>$form->createView()]);
+            return $this->render('auteur/update.html.twig',['form'=>$form->createView(),"livres"=>$livres]);
+        }
+
+        #[Route('auteur/{id}/liste/livre',name:'app_auteur_liste_livre',methods:['GET'],requirements:['id'=> Requirement::DIGITS ])]
+        public function listeLivre(Auteur $auteur):Response
+        {
+                $livres = $auteur->getLivres();
+                $nom =    $auteur->getNom();
+                $prenom = $auteur->getPrenom();
+                return $this->render('auteur/auteur_liste.html.twig',[
+                    'nom' => $nom ,
+                    'prenom' => $prenom,
+                    'livres'=>$livres 
+                    ]) ;
         }
 }
