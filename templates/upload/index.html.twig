@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UploadController!{% endblock %}
+
+{% block body %}
+
+    <h1>Upload d'un fichier PDF</h1>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.Brochure) }}
+
+        <button type="submit">Envoyer</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

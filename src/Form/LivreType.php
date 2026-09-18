@@ -25,13 +25,20 @@ class LivreType extends AbstractType
                 'input' => 'datetime_immutable'
             ])
             ->add('prix',MoneyType::class)
-            ->add('auteur',EntityType::class,[
-                'class' => Auteur::class,
-                'choice_label'=> function(Auteur $auteur){
-                    return $auteur->getNom(). ' '.$auteur->getPrenom();
-                },
-                'placeholder'=>'Choisissez un auteur'
-            ])
+
+            // Utilisation composer require  Symfony/ux-autocomplete
+            ->add('auteur', EntityType::class, [
+            'class' => Auteur::class,
+            'autocomplete' => true, // Active automatiquement le contrôleur Stimulus UX !
+        ])
+            // Solution Classique
+            // ->add('auteur',EntityType::class,[
+            //     'class' => Auteur::class,
+            //     'choice_label'=> function(Auteur $auteur){
+            //         return $auteur->getNom(). ' '.$auteur->getPrenom();
+            //     },
+            //     'placeholder'=>'Choisissez un auteur'
+            // ])
             ->add('categorie',ChoiceType::class,[
                 'choices'=>[
                     "Roman"=>"roman",
