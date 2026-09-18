@@ -1,0 +1,19 @@
+{# templates/livre/testSql.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des livres (ID supérieur à {{ id }})</h1>
+
+    {% if resultat is not empty %}
+        <ul>
+            {% for livre in resultat %}
+                <li>
+                    {# Accès aux colonnes par leur nom en base de données #}
+                    <strong>{{ livre.titre }}</strong> - ID: {{ livre.id }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun livre trouvé avec un ID supérieur à {{ id }}.</p>
+    {% endif %}
+{% endblock %}

@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 use App\Entity\Livre;
+use App\Entity\Auteur;
 use App\Form\LivreType;
 use App\Repository\LivreRepository;
-
+// use Dba\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Doctrine\DBAL\Connection;
 
 // ####################################################################
 #[Route('/livre')]
@@ -91,5 +93,20 @@ if($form->isSubmitted() && $form->isValid())
   return $this->render('livre/update.html.twig',["form"=>$form,"livre"=>$livre,'listelivres'=>$listeLivres]);         
 }
 // ####################################################################
+#[Route('/sql/{id}',name:'app_test_sql',methods:['GET'] ,requirements:['id' => Requirement::DIGITS ])]
+public function testSql(Connection $con ,int $id,EntityManagerInterface $em):Response
+{
+   $sql = "SELECT * FROM livre where id > :id ";
+
+
+   $resultat = $con->fetchAllAssociative($sql,['id' => $id]);
+
+ $livre = $em->find(Livre::class,3);
+ $auteur = $em->find(Auteur::class ,3);
+
+
+            return $this->render('livre/testSql.html.twig',["resultat"=>$resultat,"id" => $id]);
+}
+
 }
 // ####################################################################
