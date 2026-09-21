@@ -16,4 +16,33 @@
     {% else %}
         <p>Aucun livre trouvé avec un ID supérieur à {{ id }}.</p>
     {% endif %}
+      <h2>Liste des livres depuis EMI avec ID 3</h2>
+                {% if livre is not empty %}
+                 <p>il y a {{ livre | length }} livre </p>
+                    <p> {{livre.titre }} </p>
+                    <p> {{livre.date | date('d/m/Y') }} </p>
+                    <p> {{livre.prix  }} </p>
+                    <p> {{livre.categorie  }} </p>
+                {% else %}
+                    <p> la variable est vide </p>    
+                {% endif %}
+
+                   {% if auteur is not empty %}
+                   {{ dump(auteur) }}
+                 <p>il y a {{ auteur | length }} livre </p>
+                    <p> {{auteur.nom }}  {{auteur.prenom }}</p>
+
+                            {%  set books = auteur.livres %}
+
+                            {% for book in books %}
+                             <p> {{ book.titre }} </p>
+                             <p> {{ book.date|date('d/m/Y') }} </p>
+                             <p> {{ book.prix }} </p>
+                             <p> {{ book.categorie }} </p>
+                             {% endfor %}
+                {% else %}
+                    <p> la variable est vide </p>    
+                {% endif %}
+
+
 {% endblock %}

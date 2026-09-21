@@ -105,7 +105,12 @@ public function testSql(Connection $con ,int $id,EntityManagerInterface $em):Res
  $auteur = $em->find(Auteur::class ,3);
 
 
-            return $this->render('livre/testSql.html.twig',["resultat"=>$resultat,"id" => $id]);
+            return $this->render('livre/testSql.html.twig',[
+                "resultat"=>$resultat,
+                "id" => $id,
+                "livre" =>$livre,
+                "auteur" =>$auteur,
+                ]);
 }
 
 }
