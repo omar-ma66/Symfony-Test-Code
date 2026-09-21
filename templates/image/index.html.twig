@@ -4,9 +4,23 @@
 
 {% block body %}
 <style>
-   
-</style>
+    .btn{
+        text-decoration:none;
+        padding: 10px 15px ;
+        color :white;
+        border-radius:6px;
+    }
+    .btn_primary{
+        background:blue;
+    }
 
+    .boite{
+        display:flex ;
+        flex-direction:column;
+        gap:20px;
+    }
+</style>
+<div class="boite"> 
 <div class="example-wrapper">
     <h1>Index image htm twig ✅</h1>
 
@@ -15,6 +29,9 @@
 
                         <button type="submit"> Envoyer</button>
                 {{ form_end(form) }}
-
+</div>
+<div > 
+<a class="btn btn_primary" href="{{ path('app_image_show') }}">Retour</a>
+</div>
 </div>
 {% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+{% block title %} image loading show {% endblock %}
+
+
+{% block body %}
+<style>
+    .btn{
+        text-decoration:none;
+        padding: 10px 15px ;
+        color :white;
+        border-radius:6px;
+    }
+    .btn_primary{
+        background:blue;
+    }
+</style>
+
+            <h1> Affichage des images téléchargées </h1>
+
+                {% if listeFiles is not empty %}
+                    <p> il y a {{ listeFiles | length }} fichier(s)</p>
+                    {% for file in listeFiles %}
+                          <img src="{{ asset('/uploads/images/' ~ file )}}" alt="une image" width="100">
+                    {% endfor %}
+                 {% else %}
+                    <p>Aucun fichier n'est disponible </p>   
+                  {% endif %}
+
+                  <a class="btn btn_primary" href="{{ path('app_image')}}">Télécharger un image</a>
+{% endblock %}
+
+{% block javascripts %}
+{{parent() }}
+<script>
+    console.log("image show loading")
+</script>
+{% endblock %}

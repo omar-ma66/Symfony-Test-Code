@@ -27,6 +27,8 @@ final class ImageController extends AbstractController
            $safeName    = $slugger->slug($nomOriginal);
            $newFileName = $safeName.'-'.uniqId().'.'.$imageObject->guessExtension();
            $imageObject->move($this->getParameter("images_directory"),$newFileName);
+            $this->addFlash('success',"image bien télécharger .");
+              return $this->redirectToRoute('app_image_show');
                     }
             }
   
@@ -50,13 +52,13 @@ final class ImageController extends AbstractController
 
                             foreach($finder as $file)
                                 {
-                                    $listeFiles = $file->getFilename();
+                                    $listeFiles[] = $file->getFilename();
                                 }
                 }
 // dd($listeFiles);
-            return $this->render('images/show.html.twig',
+            return $this->render('image/show.html.twig',
             [
-                'fileListe'=>$listeFiles
+                'listeFiles'=>$listeFiles
             ]);
     }
 }
