@@ -9,7 +9,7 @@
 parameters:
     app.ma_super_cle: "%env(MACLEF_TEST2)%" 
     brochures_directory: "%kernel.project_dir%/public/uploads/brochures"
-    images_directory: "%kernel.project_dir%/public/upload/images"
+    images_directory: "%kernel.project_dir%/public/uploads/images"
 services:
     # default configuration for services in *this* file
     _defaults:
