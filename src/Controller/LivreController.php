@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Service\CalculatriceService ;
 use App\Entity\Livre;
 use App\Entity\Auteur;
 use App\Form\LivreType;
@@ -112,6 +113,14 @@ public function testSql(Connection $con ,int $id,EntityManagerInterface $em):Res
                 "auteur" =>$auteur,
                 ]);
 }
-
+#[Route('/test-service')]
+public function testService(CalculatriceService $calculatrice,LivreRepository $lr): Response
+{
+      $book =  $lr->findAll();
+        
+      $totalPrix = $calculatrice->total($book);
+     
+        return new Response("Résultat :".  $totalPrix);
+}
 }
 // ####################################################################
