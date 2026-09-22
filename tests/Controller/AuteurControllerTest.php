@@ -43,7 +43,7 @@ class AuteurControllerTest extends WebTestCase
         $client->submit($form);
         // dd($client->getResponse()->getContent());
         $this->assertResponseRedirects('/auteur/liste');
-        $client->followRedirect();
+        $client->followRedirect(); // suivre le redirection
         $this->assertSelectorExists('.flash-success');
     }
 }

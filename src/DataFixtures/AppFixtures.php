@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Auteur;
+use App\Entity\Livre;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -27,6 +29,19 @@ class AppFixtures extends Fixture
         $user->setPassword($this->hasher->hashPassword($user,"useruser"));
 
 
+$livre = new Livre();
+$auteur = new Auteur();
+$auteur->setNom("Hugo");
+$auteur->setPrenom("Prenom");
+$livre->setAuteur($auteur);
+$livre->setCategorie("Roman");
+$livre->setPrix("19.99");
+$livre->setTitre("histoire secrete");
+$livre->setDate(new \DateTimeImmutable());
+
+
+        $manager->persist($auteur);
+        $manager->persist($livre);
         $manager->persist($admin);
         $manager->persist($user);
         $manager->flush();
