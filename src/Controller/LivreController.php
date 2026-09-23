@@ -7,7 +7,6 @@ use App\Entity\Livre;
 use App\Entity\Auteur;
 use App\Form\LivreType;
 use App\Repository\LivreRepository;
-// use Dba\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,6 +15,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Doctrine\DBAL\Connection;
+use ApiPlatform\Metadata\ApiResource ;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
+use Doctrine\ORM\Mapping  as ORM ;
+
 
 // ####################################################################
 #[Route('/livre')]

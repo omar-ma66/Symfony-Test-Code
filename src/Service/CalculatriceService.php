@@ -22,9 +22,9 @@ class CalculatriceService
         return $a * $b;
     }
     /**
-     *  @var Livre[] $livres
+     *  @param  Livre[] $livres
      */
-    public function total( array  $livres):?float
+    public function total( array  $livres): float
     {
    $somme = 0.0 ;
      foreach($livres as $livre)
