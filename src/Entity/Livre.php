@@ -22,7 +22,9 @@ use ApiPlatform\Metadata\Patch;
         ),
         new GetCollection(),
         new Patch(),
-        new Delete()
+        new Delete(
+        security:"is_granted('ROLE_ADMIN')"
+        )
     ]
 )]
 class Livre
