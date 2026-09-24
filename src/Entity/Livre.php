@@ -7,13 +7,23 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups ;
 use ApiPlatform\Metadata\ApiResource ;
-
-
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 #[ApiResource(
     normalizationContext:['groups' => ['livre:read']],
-    denormalizationContext:['groups'=>['livre:write']]
+    denormalizationContext:['groups'=>['livre:write']],
+    operations:[
+        new Get(
+            security:""
+        ),
+        new GetCollection(),
+        new Patch(),
+        new Delete()
+    ]
 )]
 class Livre
 {

@@ -17,6 +17,28 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+
+  # Firewall utilisé uniquement pour obtenir le JWT
+        login:
+            pattern: ^/api/login
+            stateless: true
+            provider: app_user_provider
+
+            json_login:
+                check_path: /api/login_check
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        # Firewall utilisé pour les requêtes API protégées par JWT
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            jwt: ~
+    
+    #  Fin
         main:
             lazy: true
             provider: app_user_provider
