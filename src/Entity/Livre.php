@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Entity;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\LivreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups ;
-use ApiPlatform\Metadata\ApiResource ;
+use Symfony\Component\Serializer\Attribute\Groups;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
@@ -18,32 +20,32 @@ use App\Controller\GetLivreCherController;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 #[ApiResource(
-    normalizationContext:['groups' => ['livre:read']],
-    denormalizationContext:['groups'=>['livre:write']],
-    operations:[
+    normalizationContext: ['groups' => ['livre:read']],
+    denormalizationContext: ['groups' => ['livre:write']],
+    operations: [
         new Get(
-            security:""
+            security: ""
         ),
-    //     new GetCollection(
-    //           parameters: [
-    //             'prix' => new QueryParameter(
-    //             filter: new ComparisonFilter(new ExactFilter()),
-    //             property: 'prix'
-    //     )
-    // ])
-    new GetCollection(
-         uriTemplate :'/livres/chers/{prix}',
-         controller: GetLivreCherController::class,
-         name:'get_livre_chers_par_prix'
-    ),
-        
+        //     new GetCollection(
+        //           parameters: [
+        //             'prix' => new QueryParameter(
+        //             filter: new ComparisonFilter(new ExactFilter()),
+        //             property: 'prix'
+        //     )
+        // ])
+        new GetCollection(
+            uriTemplate: '/livres/chers/{prix}',
+            controller: GetLivreCherController::class,
+            name: 'get_livre_chers_par_prix'
+        ),
+
         new Patch(
-            security:"user == object.getUser()",
+            security: "user == object.getUser()",
             securityPostDenormalize: "user == object.getUser()"
         ),
         new Delete(
-            
-        security:"is_granted('ROLE_ADMIN') or user == object.getUser()"
+
+            security: "is_granted('ROLE_ADMIN') or user == object.getUser()"
         )
     ]
 )]
@@ -59,33 +61,33 @@ class Livre
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
     #[Assert\Length(
-        min:3,
-        max:30,
-        minMessage:'le titre doit faire au moin {{ limit }} carracteres.',
-        maxMessage:'le titre ne doit pas depasser {{ limit }} carracteres.'
+        min: 3,
+        max: 30,
+        minMessage: 'le titre doit faire au moin {{ limit }} carracteres.',
+        maxMessage: 'le titre ne doit pas depasser {{ limit }} carracteres.'
     )]
 
-    #[Groups(['livre:read','livre:write'])]
+    #[Groups(['livre:read', 'livre:write'])]
     private ?string $titre = null;
 
     #[ORM\Column]
     #[Assert\Type(\DateTimeInterface::class)]
-    #[Assert\NotBlank(message:'le titre ne peut être vide')]
-    #[Groups(['livre:read','livre:write'])]
+    #[Assert\NotBlank(message: 'le titre ne peut être vide')]
+    #[Groups(['livre:read', 'livre:write'])]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     #[Assert\Positive()]
-    #[Groups(['livre:read','livre:write'])]
+    #[Groups(['livre:read', 'livre:write'])]
     private ?string $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livre:read','livre:write'])]
+    #[Groups(['livre:read', 'livre:write'])]
     private ?Auteur $auteur = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read','livre:write'])]
+    #[Groups(['livre:read', 'livre:write'])]
     private ?string $categorie = "Roman";
 
     public function getId(): ?int

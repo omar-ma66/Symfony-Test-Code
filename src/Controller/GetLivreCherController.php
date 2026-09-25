@@ -14,15 +14,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[AsController]
 final class GetLivreCherController extends AbstractController
 {
-    public function __construct( private SerializerInterface $si, private EntityManagerInterface $entityManager,private LivreRepository $lr)
+    public function __construct( private SerializerInterface $si,private LivreRepository $lr)
     {
     }
     public function __invoke(float $prix):JsonResponse
     {
     $books = $this->lr->getLivreCher($prix);
     $jsonContent = $this->si->serialize($books, 'json', ['groups' => 'livre:read']);
-    return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
-    // return ($books) ;
+    return new JsonResponse($jsonContent,200,[],true);
+  
     
     }
 }
