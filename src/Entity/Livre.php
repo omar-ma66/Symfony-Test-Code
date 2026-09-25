@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\LivreRepository;
@@ -12,6 +11,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 
+use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\Doctrine\Orm\Filter\ComparisonFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use App\Controller\GetLivreCherController;
+
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 #[ApiResource(
     normalizationContext:['groups' => ['livre:read']],
@@ -20,13 +24,30 @@ use ApiPlatform\Metadata\Patch;
         new Get(
             security:""
         ),
-        new GetCollection(),
-        new Patch(),
+    //     new GetCollection(
+    //           parameters: [
+    //             'prix' => new QueryParameter(
+    //             filter: new ComparisonFilter(new ExactFilter()),
+    //             property: 'prix'
+    //     )
+    // ])
+    new GetCollection(
+         uriTemplate :'/livres/chers/{prix}',
+         controller: GetLivreCherController::class,
+         name:'get_livre_chers_par_prix'
+    ),
+        
+        new Patch(
+            security:"user == object.getUser()",
+            securityPostDenormalize: "user == object.getUser()"
+        ),
         new Delete(
-        security:"is_granted('ROLE_ADMIN')"
+            
+        security:"is_granted('ROLE_ADMIN') or user == object.getUser()"
         )
     ]
 )]
+
 class Livre
 {
     #[ORM\Id]

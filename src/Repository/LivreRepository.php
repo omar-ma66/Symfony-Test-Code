@@ -40,4 +40,13 @@ class LivreRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+          public function getLivreCher(float $val) : array
+          {
+            return $this->createQueryBuilder('l')
+                ->andWhere('l.prix > :val')
+                ->setParameter(':val',$val)
+                ->getQuery()
+                ->getResult();
+          }
 }
