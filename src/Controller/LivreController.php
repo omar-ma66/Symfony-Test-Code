@@ -21,19 +21,35 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping  as ORM ;
-
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+// use Twig\Cache\CacheInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 // ####################################################################
 #[Route('/livre')]
 final class LivreController extends AbstractController
 {
     #[Route('/', name: 'app_livre', methods: ['GET'])]
-    public function index(LivreRepository $livre): Response
+    // public function index(LivreRepository $livre): Response
+    // {
+    //     $all =    $livre->findAll();
+    //     return $this->render('livre/index2.html.twig', [
+    //         "livres" => $all
+    //     ]);
+    // }
+
+    public function index2(CacheInterface $cache,HttpClientInterface $client,LivreRepository $livre):Response
     {
-        $all =    $livre->findAll();
+        $data = $cache->get('mes_livre',function(ItemInterface $item) use($client,$livre){
+            $item->expiresAfter(60);
+                dump('CACHE MISS → requête SQL');
+            $all = $livre->findAll();
+            return $all ;
+        });
+
         return $this->render('livre/index2.html.twig', [
-            "livres" => $all
-        ]);
+            "livres" => $data]);
     }
     // ####################################################################
 
