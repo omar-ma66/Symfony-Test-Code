@@ -16,6 +16,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\Doctrine\Orm\Filter\ComparisonFilter;
 use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
 use App\Controller\GetLivreCherController;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
@@ -26,18 +28,57 @@ use App\Controller\GetLivreCherController;
         new Get(
             security: ""
         ),
-        //     new GetCollection(
-        //           parameters: [
-        //             'prix' => new QueryParameter(
+        // new GetCollection(
+        //     parameters: [
+        //         'prix' => new QueryParameter(
         //             filter: new ComparisonFilter(new ExactFilter()),
         //             property: 'prix'
-        //     )
-        // ])
-        new GetCollection(
-            uriTemplate: '/livres/chers/{prix}',
-            controller: GetLivreCherController::class,
-            name: 'get_livre_chers_par_prix'
+        //         )
+        //     ]
+        // ),
+
+        //  new GetCollection(
+        //     parameters: [
+        //         'prix' => new QueryParameter(
+        //             property: 'prix',
+        //             filter: new ComparisonFilter( new ExactFilter())
+        //         ),
+        //         'titre' => new QueryParameter(
+        //             filter: new PartialSearchFilter(),
+        //             property: 'titre'
+        //         )
+        //     ]
+        // ),
+
+          new GetCollection(
+            parameters: [
+                ':property' => new QueryParameter(
+                    properties: ['categorie','titre','auteur' ],
+                    filter: new PartialSearchFilter(),
+                ),
+                'order[:property]
+                ' => new QueryParameter(
+                    filter: new SortFilter(),
+                    properties : [
+                                   'titre',
+                                   'categorie',
+                                   'auteur',
+                                    ]
+                ),
+                'prix' => new QueryParameter(
+                 property:'prix',
+                 
+                 filter : new ComparisonFilter( new ExactFilter() )  
+                ),
+                
+            ]
         ),
+
+        // new GetCollection(
+        //     uriTemplate: '/livres/chers/{prix}',
+        //     controller: GetLivreCherController::class,
+        //     name: 'get_livre_chers_par_prix'
+        // ),
 
         new Patch(
             security: "user == object.getUser()",
