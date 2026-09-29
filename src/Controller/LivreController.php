@@ -177,9 +177,5 @@ final class LivreController extends AbstractController
         return new Response("Résultat :" .  $prixTotal . "<br>Roman :" . $prixRoman . "<br>Science :" . $prixScience."<br>Poesie :".$prixPoesie."<br>Fantastique :".$prixfantastique);
     }
 
-
-
-
-
 }
 // ####################################################################
