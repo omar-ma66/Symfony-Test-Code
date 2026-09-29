@@ -31,13 +31,40 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class LivreController extends AbstractController
 {
     #[Route('/', name: 'app_livre', methods: ['GET'])]
-    // public function index(LivreRepository $livre): Response
-    // {
-    //     $all =    $livre->findAll();
-    //     return $this->render('livre/index2.html.twig', [
-    //         "livres" => $all
-    //     ]);
-    // }
+    public function index(LivreRepository $livre): Response
+    {
+        // if(!$this->isGranted('ROLE_ADMIN'))
+        //     {
+        //         return $this->redirectToRoute('app_login');
+                
+        //     }
+
+
+        $all =    $livre->findAll();
+        return $this->render('livre/index2.html.twig', [
+            "livres" => $all
+        ]);
+    }
+
+
+
+// exemple de mise en cache ;
+
+//     #[Route('/',name:'app_livre',methods:['GET'])]
+// public function index3(HttpClientInterface $client,CacheInterface $cache ,LivreRepository $livre):Response
+// {
+//         $data = $cache->get('total_livre',function(ItemInterface $item) use ($livre,$client)
+//         {
+//             $item->expiresAfter(60);
+//           $donnees =  $client->request('GET','https://api_extern');
+//           return $donnees->toArray();
+//         });
+
+//         return $this->render("mon template twig",['data'=>$data]);
+// }
+
+
+
 
     public function index2(CacheInterface $cache,HttpClientInterface $client,LivreRepository $livre):Response
     {
@@ -149,5 +176,10 @@ final class LivreController extends AbstractController
         $prixfantastique =  $calculatrice->total($book);
         return new Response("Résultat :" .  $prixTotal . "<br>Roman :" . $prixRoman . "<br>Science :" . $prixScience."<br>Poesie :".$prixPoesie."<br>Fantastique :".$prixfantastique);
     }
+
+
+
+
+
 }
 // ####################################################################
