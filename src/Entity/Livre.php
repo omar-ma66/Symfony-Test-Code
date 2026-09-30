@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\LivreRepository;
 use Doctrine\DBAL\Types\Types;
@@ -131,6 +133,12 @@ class Livre
     #[Groups(['livre:read', 'livre:write'])]
     private ?string $categorie = "Roman";
 
+    #[ORM\ManyToOne(inversedBy: 'livres')]
+    private ?User $user = null;
+
+  
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -198,5 +206,17 @@ class Livre
     public function __toString()
     {
         return $this->titre;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

@@ -72,7 +72,7 @@
                         </div>
                          <div>
                                 {{ form_label(form.categorie) }}
-                                {{ form_widget(form.categorie) }}
+                                {{ form_widget(form.categorie,{attr:{"class":"bg-black"} } ) }}
                                 {{ form_errors(form.categorie) }} 
                         </div>
                            <div>
@@ -81,7 +81,7 @@
                                 {{ form_errors(form.auteur) }} 
                           </div>
 
-                                       <button class ="btn-submit" type="submit" >Enregistrer</button>
+                                       <button class ="btn-submit bg-green-600 p-3 rounded-md" type="submit" >Enregistrer</button>
 </div>
                             {{ form_end (form) }}
 

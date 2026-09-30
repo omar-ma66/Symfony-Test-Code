@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\CalculatriceService;
+
 use App\Entity\Livre;
 use App\Entity\Auteur;
 use App\Form\LivreType;
@@ -15,12 +15,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Doctrine\DBAL\Connection;
-use ApiPlatform\Metadata\ApiResource ;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
-use Doctrine\ORM\Mapping  as ORM ;
+use App\Services\CalculatriceService ;
+use App\Services\LivreService;
+use Doctrine\ORM\Mapping  as ORM;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 // use Twig\Cache\CacheInterface;
@@ -31,52 +33,55 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class LivreController extends AbstractController
 {
     #[Route('/', name: 'app_livre', methods: ['GET'])]
-    public function index(LivreRepository $livre): Response
+    // public function index(LivreRepository $livre): Response
+    // {
+    //     // if(!$this->isGranted('ROLE_ADMIN'))
+    //     //     {
+    //     //         return $this->redirectToRoute('app_login');
+    //     //     }
+
+    //     $all =    $livre->findAll();
+    //     return $this->render('livre/index2.html.twig', [
+    //         "livres" => $all
+    //     ]);
+    // }
+      public function index(LivreService $livreService):Response
+      {
+        $livres = $livreService->getLivres();
+        return $this->render('livre/index2.html.twig',['livres'=>$livres]);
+      }
+
+
+    // exemple de mise en cache ;
+
+    //     #[Route('/',name:'app_livre',methods:['GET'])]
+    // public function index3(HttpClientInterface $client,CacheInterface $cache ,LivreRepository $livre):Response
+    // {
+    //         $data = $cache->get('total_livre',function(ItemInterface $item) use ($livre,$client)
+    //         {
+    //             $item->expiresAfter(60);
+    //           $donnees =  $client->request('GET','https://api_extern');
+    //           return $donnees->toArray();
+    //         });
+
+    //         return $this->render("mon template twig",['data'=>$data]);
+    // }
+
+
+
+
+    public function index2(CacheInterface $cache, HttpClientInterface $client, LivreRepository $livre): Response
     {
-        // if(!$this->isGranted('ROLE_ADMIN'))
-        //     {
-        //         return $this->redirectToRoute('app_login');
-                
-        //     }
-
-
-        $all =    $livre->findAll();
-        return $this->render('livre/index2.html.twig', [
-            "livres" => $all
-        ]);
-    }
-
-
-
-// exemple de mise en cache ;
-
-//     #[Route('/',name:'app_livre',methods:['GET'])]
-// public function index3(HttpClientInterface $client,CacheInterface $cache ,LivreRepository $livre):Response
-// {
-//         $data = $cache->get('total_livre',function(ItemInterface $item) use ($livre,$client)
-//         {
-//             $item->expiresAfter(60);
-//           $donnees =  $client->request('GET','https://api_extern');
-//           return $donnees->toArray();
-//         });
-
-//         return $this->render("mon template twig",['data'=>$data]);
-// }
-
-
-
-
-    public function index2(CacheInterface $cache,HttpClientInterface $client,LivreRepository $livre):Response
-    {
-        $data = $cache->get('mes_livre',function(ItemInterface $item) use($client,$livre){
+        $data = $cache->get('mes_livre', function (ItemInterface $item) use ($client, $livre) {
             $item->expiresAfter(60);
-                dump('CACHE MISS → requête SQL');
+            dump('CACHE MISS → requête SQL');
             $all = $livre->findAll();
-            return $all ;
+            return $all;
         });
 
         return $this->render('livre/index2.html.twig', [
-            "livres" => $data]);
+            "livres" => $data
+        ]);
     }
     // ####################################################################
 
@@ -89,6 +94,7 @@ final class LivreController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $livre->setUser($this->getUser());
             $em->persist($livre);
             $em->flush();
             $this->addFlash('success', "votre livre a bien été enregistré");
@@ -108,16 +114,24 @@ final class LivreController extends AbstractController
 
 
     #[Route('/supprime/{id}', name: 'app_livre_delete', methods: ['POST'], requirements: ['id' => Requirement::DIGITS])]
-    #[IsGranted('ROLE_ADMIN')]
+    // #[IsGranted('ROLE_ADMIN')]
+    #[isGranted('ROLE_USER')]
     public function delete(Request $request, EntityManagerInterface $em, Livre $livre): Response
     {
 
-        if ($this->isCsrfTokenValid('delete' . $livre->getId(), (string) $request->request->get('_token'))) {
-            $em->remove($livre);
+        if ($this->isGranted('DELETE', $livre)) {
+            if ($this->isCsrfTokenValid('delete' . $livre->getId(), (string) $request->request->get('_token'))) {
+                $em->remove($livre);
 
-            $em->flush();
-            $this->addFlash('success', 'votre livre a bien été supprimé ');
+                $em->flush();
+                $this->addFlash('success', 'votre livre a bien été supprimé ');
+            } else {
+                $this->addFlash('error', 'vous ne pouvez pas supprimer une erreur c\'est produite');
+            }
+        } else {
+            $this->addFlash('error', 'vous devez etre le proprietaire du livre pour le supprime');
         }
+
         return $this->redirectToRoute('app_livre');
     }
 
@@ -129,14 +143,20 @@ final class LivreController extends AbstractController
         $auteurID   =  $livre->getAuteur();
         $listeLivres =              $lr->findBy(["auteur" => $auteurID]);
 
-        dump($listeLivres);
+        // dump($listeLivres);
         $form = $this->createForm(LivreType::class, $livre);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-            $this->addFlash('success', "votre livre a bien été mis a jour");
 
-            //   return  $this->redirectToRoute('app_livre');
+        //   $this->denyAccessUnlessGranted('EDIT',$livre);  
+        if ($this->isGranted('EDIT', $livre)) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->flush();
+                $this->addFlash('success', "votre livre a bien été mis a jour");
+                //   return  $this->redirectToRoute('app_livre');
+                return  $this->redirectToRoute('app_livre', [], Response::HTTP_SEE_OTHER);
+            }
+        } else {
+            $this->addFlash('error', "vous n'ete pas autorisez a modiffier ce livre");
             return  $this->redirectToRoute('app_livre', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('livre/update.html.twig', ["form" => $form, "livre" => $livre, 'listelivres' => $listeLivres]);
@@ -174,8 +194,7 @@ final class LivreController extends AbstractController
         $prixPoesie =  $calculatrice->total($book);
         $book =  $lr->findBy(["categorie" => "fantastique"]);
         $prixfantastique =  $calculatrice->total($book);
-        return new Response("Résultat :" .  $prixTotal . "<br>Roman :" . $prixRoman . "<br>Science :" . $prixScience."<br>Poesie :".$prixPoesie."<br>Fantastique :".$prixfantastique);
+        return new Response("Résultat :" .  $prixTotal . "<br>Roman :" . $prixRoman . "<br>Science :" . $prixScience . "<br>Poesie :" . $prixPoesie . "<br>Fantastique :" . $prixfantastique);
     }
-
 }
 // ####################################################################
