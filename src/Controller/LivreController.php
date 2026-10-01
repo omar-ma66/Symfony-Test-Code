@@ -36,14 +36,16 @@ final class LivreController extends AbstractController
 {
 
 #[Route('/test-event')]
-public function testEvent(EventDispatcherInterface $dispatcher): Response
+public function testEvent(EventDispatcherInterface $dispatcher,LivreService $livreService): Response
 {
-
+   $livres = $livreService->getLivres();
+       
 $livre = new Livre();
 $livre->setTitre(('Mon Livre de test'));
 
        $dispatcher->dispatch(   new LivreCreatedEvent($livre)  );
-       return new Response('Evenement envoye');
+    //    return new Response('Evenement envoye');
+        return $this->render('livre/index2.html.twig', ['livres' => $livres]);
 }
 
 
