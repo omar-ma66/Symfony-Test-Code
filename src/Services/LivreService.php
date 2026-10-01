@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Services ;
+namespace App\Services;
 
 use App\Repository\LivreRepository;
 
-class LivreService{
-    public function __construct(private LivreRepository $livreRepository)
-    {
-    }
+class LivreService
+{
+  public function __construct(private LivreRepository $livreRepository) {}
 
-    public function getLivres():array
-    {
-      return $this->livreRepository->findAll();        
-    }
+  public function getLivres(): array
+  {
+    return $this->livreRepository->findAll();
+  }
 }

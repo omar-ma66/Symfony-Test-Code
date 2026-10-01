@@ -20,7 +20,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
-use App\Services\CalculatriceService ;
+use App\Services\CalculatriceService;
 use App\Services\LivreService;
 use Doctrine\ORM\Mapping  as ORM;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -45,11 +45,11 @@ final class LivreController extends AbstractController
     //         "livres" => $all
     //     ]);
     // }
-      public function index(LivreService $livreService):Response
-      {
+    public function index(LivreService $livreService): Response
+    {
         $livres = $livreService->getLivres();
-        return $this->render('livre/index2.html.twig',['livres'=>$livres]);
-      }
+        return $this->render('livre/index2.html.twig', ['livres' => $livres]);
+    }
 
 
     // exemple de mise en cache ;

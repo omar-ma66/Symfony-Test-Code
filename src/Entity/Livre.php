@@ -52,27 +52,27 @@ use App\Controller\GetLivreCherController;
         //     ]
         // ),
 
-          new GetCollection(
+        new GetCollection(
             parameters: [
                 ':property' => new QueryParameter(
-                    properties: ['categorie','titre','auteur' ],
+                    properties: ['categorie', 'titre', 'auteur'],
                     filter: new PartialSearchFilter(),
                 ),
                 'order[:property]
                 ' => new QueryParameter(
                     filter: new SortFilter(),
-                    properties : [
-                                   'titre',
-                                   'categorie',
-                                   'auteur',
-                                    ]
+                    properties: [
+                        'titre',
+                        'categorie',
+                        'auteur',
+                    ]
                 ),
                 'prix' => new QueryParameter(
-                 property:'prix',
-                 
-                 filter : new ComparisonFilter( new ExactFilter() )  
+                    property: 'prix',
+
+                    filter: new ComparisonFilter(new ExactFilter())
                 ),
-                
+
             ]
         ),
 
@@ -136,7 +136,7 @@ class Livre
     #[ORM\ManyToOne(inversedBy: 'livres')]
     private ?User $user = null;
 
-  
+
 
 
     public function getId(): ?int
