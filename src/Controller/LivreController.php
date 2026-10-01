@@ -20,18 +20,37 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
+use App\Event\LivreCreatedEvent;
 use App\Services\CalculatriceService;
 use App\Services\LivreService;
 use Doctrine\ORM\Mapping  as ORM;
+// use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 // use Twig\Cache\CacheInterface;
 use Symfony\Contracts\Cache\CacheInterface;
-
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 // ####################################################################
 #[Route('/livre')]
 final class LivreController extends AbstractController
 {
+
+#[Route('/test-event')]
+public function testEvent(EventDispatcherInterface $dispatcher): Response
+{
+
+$livre = new Livre();
+$livre->setTitre(('Mon Livre de test'));
+
+       $dispatcher->dispatch(   new LivreCreatedEvent($livre)  );
+       return new Response('Evenement envoye');
+}
+
+
+
+
+
+
     #[Route('/', name: 'app_livre', methods: ['GET'])]
     // public function index(LivreRepository $livre): Response
     // {
