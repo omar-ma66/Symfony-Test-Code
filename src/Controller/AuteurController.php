@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Auteur;
+use App\Entity\Livre;
 use App\Form\AuteurType;
 use App\Repository\AuteurRepository;
 use App\Repository\UserRepository;
@@ -103,10 +104,11 @@ final class AuteurController extends AbstractController
         ]);
     } 
 //##########################################################################"
-    #[Route('auteur/special',name:'app_auteur_special',methods:['GET'])]
+
+    #[Route('auteur/special',name:'app_auteur_special',methods:['GET'])] 
     public function special(UserRepository $ur):Response
     {
-    $user = $ur->findOneByEmail("admin@admin.com");
+    $user = $ur->findOneByEmail("admin@admin.com");  
             return $this->json($user);
     }
 }
