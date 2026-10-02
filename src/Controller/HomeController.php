@@ -36,4 +36,12 @@ final class HomeController extends AbstractController
     {
         return $this->render('home/home-test.html.twig');
     }
+
+    #[Route('/home/redirect', name: 'app_home_redirect', methods: ['GET'])]
+    public function routeTest(): Response
+    {
+       return  $this->redirectToRoute('app_home');
+        return $this->render('home/home-test.html.twig');
+    }
+
 }

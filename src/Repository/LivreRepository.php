@@ -45,7 +45,7 @@ class LivreRepository extends ServiceEntityRepository
           {
             return $this->createQueryBuilder('l')
                 ->andWhere('l.prix > :val')
-                ->setParameter(':val',$val)
+                ->setParameter('val',$val)
                 ->getQuery()
                 ->getResult();
           }

@@ -28,7 +28,7 @@ $form = $this->createForm(UploadType::class) ;
                             $monFichier = uniqid().'.'.$fichier->guessExtension();
                             $fichier->move($this->getParameter('brochures_directory'),$monFichier);
                             $this->addFlash("success","votre fichier a bien été téléchargé !");
-                            $this->redirectToRoute('app_upload');
+                          return  $this->redirectToRoute('app_upload');
                         }
                 }
 

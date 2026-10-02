@@ -21,10 +21,12 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use App\Event\LivreCreatedEvent;
+use App\Message\LivreCreatedMessage;
 use App\Services\CalculatriceService;
 use App\Services\LivreService;
 use Doctrine\ORM\Mapping  as ORM;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Messenger\MessageBusInterface;
 // use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -44,7 +46,7 @@ public function testLivre(LivreRepository $livreRepository,int $id , int $nb):Js
 }
 
 #[Route('/test-event')]
-public function testEvent(EventDispatcherInterface $dispatcher,LivreService $livreService): Response
+public function testEvent(EventDispatcherInterface $dispatcher,LivreService $livreService,MessageBusInterface $bus): Response
 {
    $livres = $livreService->getLivres();
        
@@ -52,6 +54,9 @@ $livre = new Livre();
 $livre->setTitre(('Mon Livre de test'));
 
        $dispatcher->dispatch(   new LivreCreatedEvent($livre)  );
+                  $bus->dispatch(new LivreCreatedMessage(25));
+
+
     //    return new Response('Evenement envoye');
         return $this->render('livre/index2.html.twig', ['livres' => $livres]);
 }

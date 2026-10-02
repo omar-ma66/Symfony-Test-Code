@@ -11,5 +11,6 @@ class LivreCreatedMessageHandler
  public function __invoke( LivreCreatedMessage $message): void
 {
     dump('livre reçu: '.$message->getLivreId());
+    throw new \Exception("Erreur Volontaire");
 }
 }
