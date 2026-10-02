@@ -24,6 +24,7 @@ use App\Event\LivreCreatedEvent;
 use App\Services\CalculatriceService;
 use App\Services\LivreService;
 use Doctrine\ORM\Mapping  as ORM;
+use Symfony\Component\HttpFoundation\JsonResponse;
 // use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -34,6 +35,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 #[Route('/livre')]
 final class LivreController extends AbstractController
 {
+
+#[Route('/tuto/{id}/{nb}',name:'app_test_test_livre',methods:['GET'],requirements:["id"=>Requirement::DIGITS,"nb"=>Requirement::DIGITS] )]
+public function testLivre(LivreRepository $livreRepository,int $id , int $nb):JsonResponse
+{
+   $livres =   $livreRepository->chercheLivresEtAuteurs(); // Array de type PHP 
+        return  new JsonResponse($livres);
+}
 
 #[Route('/test-event')]
 public function testEvent(EventDispatcherInterface $dispatcher,LivreService $livreService): Response
@@ -217,5 +225,22 @@ $livre->setTitre(('Mon Livre de test'));
         $prixfantastique =  $calculatrice->total($book);
         return new Response("Résultat :" .  $prixTotal . "<br>Roman :" . $prixRoman . "<br>Science :" . $prixScience . "<br>Poesie :" . $prixPoesie . "<br>Fantastique :" . $prixfantastique);
     }
+
+
+//  public function livrePasCher(float $prix = 50 ,string  $auteur="Tolkien" ):array
+// {
+//  return  $this->createQueryBuilder('l')
+//             ->join('l.auteur','a')
+//             ->andWhere('a.nom  = :auteur')
+//             ->andWhere('l.prix < :prix')
+//             ->setParameter('prix',$prix)
+//             ->setParameter('auteur',$auteur)
+//             ->orderBy('l.prix','ASC')
+//             ->getQuery()
+//             ->getResult();
+            
+// }
+
+
 }
 // ####################################################################

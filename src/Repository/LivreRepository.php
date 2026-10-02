@@ -49,4 +49,14 @@ class LivreRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
           }
+
+          public function chercheLivresEtAuteurs(): array
+          {
+            return $this->createQueryBuilder('l')
+                   ->join('l.auteur','a')
+                   ->addSelect('a')
+                  
+                   ->getQuery()
+                   ->getArrayResult();
+          }
 }

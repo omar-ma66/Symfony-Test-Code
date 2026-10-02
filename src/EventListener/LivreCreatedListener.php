@@ -5,7 +5,7 @@ namespace App\EventListener;
 use App\Event\LivreCreatedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(event: LivreCreatedEvent::class)]
+#[AsEventListener(event: LivreCreatedEvent::class, priority: 0)]
 class LivreCreatedListener
 {
 
